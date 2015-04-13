@@ -1,14 +1,14 @@
-ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net"
+ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
 
 (asciiHeader 
   (asciiVersion 3 0)
-  (timeStamp 2015 4 10 19 7 35)
+  (timeStamp 2015 4 12 22 4 27)
   (program "P-CAD 2006 Schematic" "19.02.9589")
   (copyright "Copyright © 1992-2006 Altium Limited")
   (fileAuthor "")
   (headerString "")
   (fileUnits Mil)
-  (guidString "{E75DE2CE-0E2B-4CD9-80C2-323063369C6C}")
+  (guidString "{B0EAB835-0696-4D7E-895A-D49B7C180E7C}")
 )
 
 (library "Library_1"
@@ -2773,7 +2773,6 @@ ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
     (node "B1" "3")
   )
   (net "VCC3V3"
-    (node "C37" "2")
     (node "DD4" "14")
     (node "DD4" "11")
     (node "DD4" "15")
@@ -2804,6 +2803,7 @@ ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
     (node "C11" "1")
     (node "J3" "2")
     (node "C36" "2")
+    (node "C37" "2")
     (node "X25" "1")
     (node "C35" "2")
     (node "C29" "1")
@@ -2832,8 +2832,6 @@ ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
     (node "C49" "1")
   )
   (net "GND"
-    (node "C37" "1")
-    (node "D4" "2")
     (node "J1" "13")
     (node "DD4" "3")
     (node "DD4" "18")
@@ -2865,6 +2863,7 @@ ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
     (node "DD1" "29")
     (node "DD1" "13")
     (node "C11" "2")
+    (node "D4" "2")
     (node "C7" "1")
     (node "X27" "3")
     (node "X24" "2")
@@ -2875,6 +2874,7 @@ ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
     (node "J3" "5")
     (node "J3" "4")
     (node "C36" "1")
+    (node "C37" "1")
     (node "N4" "3")
     (node "X13" "2")
     (node "C33" "2")
@@ -3089,9 +3089,9 @@ ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
     (node "J2" "2")
   )
   (net "#38_HEAT_BED"
+    (node "J1" "10")
     (node "C6" "1")
     (node "R5" "2")
-    (node "J1" "10")
   )
   (net "#10_FAN_PWM"
     (node "J1" "5")
@@ -3233,8 +3233,8 @@ ACCEL_ASCII "C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
     (node "D6" "2")
   )
   (net "NET00010"
-    (node "C6" "2")
     (node "D4" "1")
+    (node "C6" "2")
     (node "R6" "2")
     (node "N1" "2")
   )

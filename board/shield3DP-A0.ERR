@@ -1,19 +1,19 @@
-P-CAD Net List Load Errors
+P-CAD Net List Compare Errors
 
 ======================================================================
 
-Netlist filename: C:\Users\Joseph\Documents\GitHub\mchp_kossel\board\shield3DP-A0.net
-Error: line 2091
-   * Component CAP E THM200 D400 not loaded.  Component is not in library.
-Warning: line 2634
-   * Component C49 value mismatch between board (1u) and netlist file (10u)
-Error: Net GND: Refdes C7 of C7-1 not found.
+Netlist filename: Q:\3dp\mchp_kossel\board\shield3DP-A0.net
 Warning: Net #1_UART_TX has less than two nodes.
 Warning: Net #0_UART_RX has less than two nodes.
-Error: Net PWR_12V: Refdes C7 of C7-2 not found.
 
-Net List Errors:   3
-Net List Warnings: 3
+2 warning(s) detected.
+0 error(s) detected.
+
+
+
+
+
+
 
 
 
@@ -62,5 +62,5 @@ Net List Warnings: 3
 
 ----------------------------------------------------------------------
 
-10-Apr-15  19:07                                            Page    1
+12-Apr-15  22:04                                            Page    1
 
