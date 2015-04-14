@@ -1,8 +1,8 @@
-ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
+ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
 
 (asciiHeader 
   (asciiVersion 3 0)
-  (timeStamp 2015 4 12 22 4 27)
+  (timeStamp 2015 4 13 18 31 22)
   (program "P-CAD 2006 Schematic" "19.02.9589")
   (copyright "Copyright © 1992-2006 Altium Limited")
   (fileAuthor "")
@@ -2675,10 +2675,10 @@ ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
     (patternName "0805")
   )
   (compInst "C46"
-    (compRef "CAP C 0603_1")
-    (originalName "CAP C 0603")
-    (compValue "1u")
-    (patternName "0603")
+    (compRef "CAP C 0805_1")
+    (originalName "CAP C 0805")
+    (compValue "10u")
+    (patternName "0805")
   )
   (compInst "X23"
     (compRef "PIN100 2_1")
@@ -2832,6 +2832,7 @@ ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
     (node "C49" "1")
   )
   (net "GND"
+    (node "C46" "2")
     (node "J1" "13")
     (node "DD4" "3")
     (node "DD4" "18")
@@ -2922,7 +2923,6 @@ ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
     (node "D6" "1")
     (node "R9" "2")
     (node "D2" "2")
-    (node "C46" "2")
     (node "C49" "2")
     (node "X4" "2")
     (node "B1" "2")
@@ -3153,6 +3153,7 @@ ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
     (node "R26" "1")
   )
   (net "PWR_12V"
+    (node "C46" "1")
     (node "DD4" "22")
     (node "DD4" "28")
     (node "DD3" "22")
@@ -3181,7 +3182,6 @@ ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
     (node "C31" "1")
     (node "C25" "1")
     (node "C19" "1")
-    (node "C46" "1")
     (node "C50" "2")
     (node "C22" "1")
     (node "C21" "1")
