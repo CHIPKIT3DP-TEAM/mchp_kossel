@@ -1,8 +1,8 @@
-ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
+ACCEL_ASCII "Q:\3dp\mchp_kossel\board\shield3DP-A0.net"
 
 (asciiHeader 
   (asciiVersion 3 0)
-  (timeStamp 2015 4 13 18 31 22)
+  (timeStamp 2015 4 13 21 57 37)
   (program "P-CAD 2006 Schematic" "19.02.9589")
   (copyright "Copyright © 1992-2006 Altium Limited")
   (fileAuthor "")
@@ -2773,6 +2773,7 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "B1" "3")
   )
   (net "VCC3V3"
+    (node "C2" "1")
     (node "DD4" "14")
     (node "DD4" "11")
     (node "DD4" "15")
@@ -2821,18 +2822,18 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "R17" "1")
     (node "R34" "2")
     (node "R31" "1")
-    (node "C2" "1")
   )
   (net "VCC5V0"
+    (node "C3" "1")
     (node "X11" "10")
     (node "X24" "1")
     (node "J3" "3")
     (node "X26" "2")
-    (node "C3" "1")
     (node "C49" "1")
   )
   (net "GND"
-    (node "C46" "2")
+    (node "C2" "2")
+    (node "C3" "2")
     (node "J1" "13")
     (node "DD4" "3")
     (node "DD4" "18")
@@ -2898,7 +2899,6 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "C27" "2")
     (node "C23" "2")
     (node "C26" "1")
-    (node "C3" "2")
     (node "C17" "2")
     (node "C20" "1")
     (node "C16" "2")
@@ -2923,6 +2923,7 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "D6" "1")
     (node "R9" "2")
     (node "D2" "2")
+    (node "C46" "2")
     (node "C49" "2")
     (node "X4" "2")
     (node "B1" "2")
@@ -2931,7 +2932,6 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "C32" "1")
     (node "C22" "2")
     (node "C21" "2")
-    (node "C2" "2")
     (node "C14" "1")
     (node "R16" "2")
     (node "C38" "1")
@@ -2941,7 +2941,6 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "C4" "1")
   )
   (net "VIN"
-    (node "J3" "6")
     (node "F2" "1")
     (node "F1" "1")
     (node "X4" "1")
@@ -3153,7 +3152,7 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "R26" "1")
   )
   (net "PWR_12V"
-    (node "C46" "1")
+    (node "J3" "6")
     (node "DD4" "22")
     (node "DD4" "28")
     (node "DD3" "22")
@@ -3182,6 +3181,7 @@ ACCEL_ASCII "D:\MCHP\mchp_kossel\board\shield3DP-A0.net"
     (node "C31" "1")
     (node "C25" "1")
     (node "C19" "1")
+    (node "C46" "1")
     (node "C50" "2")
     (node "C22" "1")
     (node "C21" "1")
