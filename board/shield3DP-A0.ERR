@@ -2,41 +2,41 @@ P-CAD Net List Compare Errors
 
 ======================================================================
 
-Netlist filename: Q:\3dp\mchp_kossel\board\shield3DP-A0.net
+Netlist filename: D:\MCHP\mchp_kossel\board\shield3DP-A0.net
+Warning: line 1993
+   * Component X16 value mismatch between board (FAN2) and netlist file (FAN_DC)
+Warning: line 2028
+   * Component X15 value mismatch between board (FAN2) and netlist file (FAN_PWM)
+Warning: line 2116
+   * Component X4 value mismatch between board (PWR) and netlist file (VIN)
+Warning: line 2144
+   * Component X7 value mismatch between board (STEPPER_A) and netlist file (ALPHA)
+Warning: line 2162
+   * Component X5 value mismatch between board (BED_OUT) and netlist file (HEAT_BED)
+Warning: line 2215
+   * Component X6 value mismatch between board (EXT_OUT) and netlist file (HEAT_EXT)
+Warning: line 2315
+   * Component X8 value mismatch between board (STEPPER_B) and netlist file (BRAVO)
+Warning: line 2375
+   * Component X9 value mismatch between board (STEPPER_C) and netlist file (CHARLIE)
+Warning: line 2435
+   * Component X10 value mismatch between board (STEPPER_E) and netlist file (EXTRUDER)
+Warning: line 2524
+   * Component X13 value mismatch between board (T_EXT) and netlist file (THERMO_EXT)
+Warning: line 2530
+   * Component X14 value mismatch between board (T_BED) and netlist file (THERMO_BED)
+Warning: line 2668
+   * Component X23 value mismatch between board () and netlist file (+12V)
+Warning: line 2674
+   * Component X24 value mismatch between board () and netlist file (+5.0V)
+Warning: line 2680
+   * Component X25 value mismatch between board () and netlist file (+3.3V)
 Warning: Net #1_UART_TX has less than two nodes.
 Warning: Net #0_UART_RX has less than two nodes.
+Error: Net:Node RESET:B1-4 found in the netlist but not on the board.
 
-2 warning(s) detected.
-0 error(s) detected.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+16 warning(s) detected.
+1 error(s) detected.
 
 
 
@@ -62,5 +62,5 @@ Warning: Net #0_UART_RX has less than two nodes.
 
 ----------------------------------------------------------------------
 
-12-Apr-15  22:04                                            Page    1
+15-Apr-15  17:41                                            Page    1
 
