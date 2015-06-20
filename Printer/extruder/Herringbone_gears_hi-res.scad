@@ -17,8 +17,8 @@
 
 use <parametric_involute_gear_v5.1.scad>
 
-//WadeL_double_helix();  //this module call will make the large double helix gear
-WadesS_double_helix(); //this module call will make the small double helix gear
+WadeL_double_helix();  //this module call will make the large double helix gear
+//WadesS_double_helix(); //this module call will make the small double helix gear
 
 module WadeL_double_helix(){
 	//Large WADE's Gear - Double Helix
@@ -74,7 +74,7 @@ module WadeL_double_helix(){
 
 		//Instead of making changes to mendel_misc.inc with higher resoultion,
 		//the bolt hole is made the old fashion way with higher resoulution below
-			translate ([0,0,nut_height-5 ]) cylinder(r=7.5,h=6, $fn=6);
+			translate ([0,0,nut_height-5 ]) cylinder(r=7.6,h=6, $fn=6);
 
 		for (hole=[0:num_holes-1])
 		{
