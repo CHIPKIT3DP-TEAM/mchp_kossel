@@ -73,20 +73,11 @@ UART_REGS;
 
 typedef struct
 {
-    volatile INT32 REG;
-    volatile INT32 CLR;
-    volatile INT32 SET;
-    volatile INT32 INV;
-}
-UART_IEC;
-
-typedef struct
-{
-    UART_IEC *rxIEC;
+    SYSTEM_SFR *rxIEC;
     UINT32 rxMask;
-    UART_IEC *txIEC;
+    SYSTEM_SFR *txIEC;
     UINT32 txMask;
-    UART_IEC *errorIEC;
+    SYSTEM_SFR *errorIEC;
     UINT32 errorMask;
 }
 UART_INT_REGS;

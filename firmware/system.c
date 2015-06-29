@@ -27,7 +27,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
 
  *******************************************************************************/
-#define     SYSTEM_C
+#define     _SYSTEM_C_
 #include    "system.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ UINT8 sysIntCount = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID SYS_Initialize ( VOID )
+VOID SYSTEM_Initialize ( VOID )
 {
     LATA   = 0b0000000000000000;
     TRISA  = 0b1000010000110000;
@@ -66,21 +66,19 @@ VOID SYS_Initialize ( VOID )
     TRISG  = 0b0000000110000000;
     ANSELG = 0b0000000000000000;
 
-    SYS_LedOn ( SYS_LED_SYSTEM );
-    while ( OSCCONbits.SLOCK == 0 )
-    {
-        Nop ( );
-    }
-    SYS_LedOff ( SYS_LED_SYSTEM );
-
-    PB1DIV = 127;
-    PB2DIV = _PB2DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
-    PB3DIV = _PB3DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
-    PB4DIV = _PB4DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
-    PB5DIV = _PB5DIV_ON_MASK;
-    PB7DIV = _PB5DIV_ON_MASK;
-    PB8DIV = 0;
-    
+// FIXME - PLL ready
+//    while ( OSCCONbits.SLOCK == 0 )
+//        Nop ( );
+//
+//    PB1DIV = 127;
+//    PB2DIV = _PB2DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
+//    PB3DIV = _PB3DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
+//    PB4DIV = _PB4DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
+//    PB5DIV = _PB5DIV_ON_MASK;
+//    PB7DIV = _PB5DIV_ON_MASK;
+//    PB8DIV = 0;
+//    
+//    FIXME - scan ?
 //    AD1CON1 = 0b1000011011100100;
 //    AD1CON2 = 0b0000010000010000;
 //    AD1CON3 = 0b0001111100000000 | (( SYS_GetPeripheralClock () + 10000000 ) / 20000000 ); // 67..133 ns AD clock
@@ -91,29 +89,29 @@ VOID SYS_Initialize ( VOID )
 
     TIME_Initialize ();
 
-    TMR1 = 0;
-    T1CON = 0;
-    PR1 = SYS_GetPeripheralClock () / 1000;
-    T1CONbits.TON = TRUE;
-    IPC1bits.T1IP = 2;
-    IFS0bits.T1IF = FALSE;
-    IEC0bits.T1IE = TRUE;
-
-    SYS_IntEnable ();
+//    FIXME - Tmr1 for 1ms int
+//    TMR1 = 0;
+//    T1CON = 0;
+//    PR1 = SYSTEM_GetPeripheralClock () / 1000;
+//    T1CONbits.TON = TRUE;
+//    IPC1bits.T1IP = 2;
+//    IFS0bits.T1IF = FALSE;
+//    IEC0bits.T1IE = TRUE;
+//
+//    SYSTEM_EnableInterrupts ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID SYS_Idle ( VOID )
+VOID SYSTEM_Idle ( VOID )
 {
-    LATGCLR = _LATG_LATG15_MASK;
-    asm volatile ("wait");
-    LATGSET = _LATG_LATG15_MASK;
+    // FIXME - activity LED indication ?
+    _wait ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID SYS_IntEnable ( VOID )
+VOID SYSTEM_EnableInterrupts ( VOID )
 {
     if ( sysIntCount )
         sysIntCount --;
@@ -126,7 +124,7 @@ VOID SYS_IntEnable ( VOID )
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID SYS_IntDisable ( VOID )
+VOID SYSTEM_DisableInterrupts ( VOID )
 {
     asm volatile("di");
     
@@ -138,92 +136,58 @@ VOID SYS_IntDisable ( VOID )
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID SYS_LedOn ( UINT8 led )
-{
-    LATB |= ( led & 0b1111 ) << 6;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-VOID SYS_LedOff ( UINT8 led )
-{
-    LATB &= (( led ^ 0b1111 ) & 0b1111 ) << 6;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 UINT16 SYS_GetADC ( UINT8 chn )
 {
-    return (( &ADC1BUF0 )[chn] );
+//    return (( &ADC1BUF0 )[chn] );
 }
 
-////////////////////////////////////////////////////////////////////////////////
-
-VOID SYS_SetPWM ( UINT8 chn, UINT16 val )
-{
-//    switch ( chn )
-//    {
-//        case 4:
-//            OC4RS = val / SYS_PWM_FREQ_MULTIPLIER;
-//            break;
+// FIXME - interrupts
+//////////////////////////////////////////////////////////////////////////////////
+//// Application Interrupts
+//////////////////////////////////////////////////////////////////////////////////
 //
-//        case 5:
-//            OC5RS = val / SYS_PWM_FREQ_MULTIPLIER;
-//            break;
-//    }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-//VOID ISR _USB1Interrupt ( VOID )
+//VOID ISR _T1Interrupt ( VOID )
 //{
-//    USBDeviceTasks ();
+//    IFS0bits.T1IF = FALSE;
+//    SYSTEM_T1Interrupt ();
 //}
-
-////////////////////////////////////////////////////////////////////////////////
-
-VOID ISR _T1Interrupt ( VOID )
-{
-    IFS0bits.T1IF = FALSE;
-    SYS_T1Interrupt ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Section: System Interrupts
-////////////////////////////////////////////////////////////////////////////////
-
-VOID ISR _DefaultInterrupt ( void )
-{
-    SYSTEM_Halt ();
-    Nop();
-    Nop();
-}
-////////////////////////////////////////////////////////////////////////////////
-VOID ISR _OscillatorFail ( void )
-{
-    SYSTEM_Halt ();
-    Nop();
-    Nop();
-}
-////////////////////////////////////////////////////////////////////////////////
-VOID ISR _AddressError ( void )
-{
-    SYSTEM_Halt ();
-    Nop();
-    Nop();
-}
-////////////////////////////////////////////////////////////////////////////////
-VOID ISR _StackError ( void )
-{
-    SYSTEM_Halt ();
-    Nop();
-    Nop();
-}
-////////////////////////////////////////////////////////////////////////////////
-VOID ISR _MathError ( void )
-{
-    SYSTEM_Halt ();
-    Nop();
-    Nop();
-}
-////////////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////////////
+//// System Interrupts
+//////////////////////////////////////////////////////////////////////////////////
+//
+//VOID ISR _DefaultInterrupt ( void )
+//{
+//    SYSTEM_Halt ();
+//    Nop();
+//    Nop();
+//}
+//////////////////////////////////////////////////////////////////////////////////
+//VOID ISR _OscillatorFail ( void )
+//{
+//    SYSTEM_Halt ();
+//    Nop();
+//    Nop();
+//}
+//////////////////////////////////////////////////////////////////////////////////
+//VOID ISR _AddressError ( void )
+//{
+//    SYSTEM_Halt ();
+//    Nop();
+//    Nop();
+//}
+//////////////////////////////////////////////////////////////////////////////////
+//VOID ISR _StackError ( void )
+//{
+//    SYSTEM_Halt ();
+//    Nop();
+//    Nop();
+//}
+//////////////////////////////////////////////////////////////////////////////////
+//VOID ISR _MathError ( void )
+//{
+//    SYSTEM_Halt ();
+//    Nop();
+//    Nop();
+//}
+//////////////////////////////////////////////////////////////////////////////////

@@ -36,7 +36,7 @@
 
 */
 
-#define MAIN_C
+#define _MAIN_C_
 #include "main.h"
 
 //HEATER _heater = { 4450, 25, 100000, 4700, 20000, 30000, 30000, 65535, SYS_AD_THERM0, SYS_PWM_HOTEND0 };
@@ -120,7 +120,7 @@ INT main ( VOID )
 //            putUSBUSART ( "A", 1 );
         }
 
-        SYS_Idle ();
+        SYSTEM_Idle ();
     }
 }
 
@@ -128,7 +128,7 @@ INT main ( VOID )
 
 VOID MAIN_Initialize ( VOID )
 {
-    SYS_Initialize ();
+    SYSTEM_Initialize ();
     TIME_Initialize ();
 //    USBDeviceInit ();
 //    USBDeviceAttach ();

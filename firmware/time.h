@@ -41,8 +41,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef TIME_H
-#define TIME_H
+#ifndef _TIME_H_
+#define _TIME_H_
 
 #include "system.h"
 

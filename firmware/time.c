@@ -39,7 +39,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 *******************************************************************************/
 
-#define     TIME_C
+#define     _TIME_C_
 #include    "time.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,14 +82,15 @@ VOID TIME_Delay10us ( UINT16 delay )
             while ( timeCycles -- );
         }       
     #elif defined ( __C32__ ) || defined ( __XC32__ )
-        timeCycles = delay;
-        timeCycles *= ( SYS_GetInstructionClock () + 3905 ) / 3906;
-        timeCycles /= 128;
-        if ( timeCycles >= 5 )
-        {
-            timeCycles -= 5;
-            while ( timeCycles -- );
-        }    
+// FIXME - reuse Tmr1 in polling mode ?
+//        timeCycles = delay;
+//        timeCycles *= ( SYSTEM_GetInstructionClock () + 3905 ) / 3906;
+//        timeCycles /= 128;
+//        if ( timeCycles >= 5 )
+//        {
+//            timeCycles -= 5;
+//            while ( timeCycles -- );
+//        }    
     #endif
 }
 ////////////////////////////////////////////////////////////////////////////////

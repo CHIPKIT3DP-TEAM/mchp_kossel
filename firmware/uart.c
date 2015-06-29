@@ -28,7 +28,7 @@
     CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 ********************************************************************/
-#define UART_C
+#define _UART_C_
 #include "uart.h"
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -36,33 +36,33 @@ UART_MODULE uartModule[UART_MODULE_COUNT] =
 {
     {
         (UART_REGS*) _UART1_BASE_ADDRESS,
-        (UART_IEC*) &IEC1, _IEC1_U1RXIE_MASK,
-        (UART_IEC*) &IEC1, _IEC1_U1TXIE_MASK,
-        (UART_IEC*) &IEC1, _IEC1_U1EIE_MASK
+        (SYSTEM_SFR*) &IEC1, _IEC3_U1RXIE_MASK,
+        (SYSTEM_SFR*) &IEC1, _IEC3_U1TXIE_MASK,
+        (SYSTEM_SFR*) &IEC1, _IEC3_U1EIE_MASK
     },
     {
         (UART_REGS*) _UART2_BASE_ADDRESS,
-        (UART_IEC*) &IEC1, _IEC1_U2RXIE_MASK,
-        (UART_IEC*) &IEC1, _IEC1_U2TXIE_MASK,
-        (UART_IEC*) &IEC1, _IEC1_U2EIE_MASK
+        (SYSTEM_SFR*) &IEC1, _IEC4_U2RXIE_MASK,
+        (SYSTEM_SFR*) &IEC1, _IEC4_U2TXIE_MASK,
+        (SYSTEM_SFR*) &IEC1, _IEC4_U2EIE_MASK
     },
     {
         (UART_REGS*) _UART3_BASE_ADDRESS,
-        (UART_IEC*) &IEC1, _IEC1_U3RXIE_MASK,
-        (UART_IEC*) &IEC2, _IEC2_U3TXIE_MASK,
-        (UART_IEC*) &IEC1, _IEC1_U3EIE_MASK
+        (SYSTEM_SFR*) &IEC1, _IEC4_U3RXIE_MASK,
+        (SYSTEM_SFR*) &IEC2, _IEC4_U3TXIE_MASK,
+        (SYSTEM_SFR*) &IEC1, _IEC4_U3EIE_MASK
     },
     {
         (UART_REGS*) _UART4_BASE_ADDRESS,
-        (UART_IEC*) &IEC2, _IEC2_U4RXIE_MASK,
-        (UART_IEC*) &IEC2, _IEC2_U4TXIE_MASK,
-        (UART_IEC*) &IEC2, _IEC2_U4EIE_MASK
+        (SYSTEM_SFR*) &IEC2, _IEC5_U4RXIE_MASK,
+        (SYSTEM_SFR*) &IEC2, _IEC5_U4TXIE_MASK,
+        (SYSTEM_SFR*) &IEC2, _IEC5_U4EIE_MASK
     },
     {
         (UART_REGS*) _UART5_BASE_ADDRESS,
-        (UART_IEC*) &IEC2, _IEC2_U5RXIE_MASK,
-        (UART_IEC*) &IEC2, _IEC2_U5TXIE_MASK,
-        (UART_IEC*) &IEC2, _IEC2_U5EIE_MASK
+        (SYSTEM_SFR*) &IEC2, _IEC5_U5RXIE_MASK,
+        (SYSTEM_SFR*) &IEC2, _IEC5_U5TXIE_MASK,
+        (SYSTEM_SFR*) &IEC2, _IEC5_U5EIE_MASK
     },
 };
 
