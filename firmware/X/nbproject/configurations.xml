@@ -31,6 +31,7 @@
       <itemPath>../drive/planner.c</itemPath>
       <itemPath>../drive/stepper.c</itemPath>
       <itemPath>../ocmp.c</itemPath>
+      <itemPath>../config.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -49,7 +50,7 @@
         <targetDevice>PIC32MZ2048EFH100</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>RealICEPlatformTool</platformTool>
+        <platformTool>ICD3PlatformTool</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>1.40</languageToolchainVersion>
         <platform>3</platform>
