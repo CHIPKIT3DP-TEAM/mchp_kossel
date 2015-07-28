@@ -1,38 +1,9 @@
-/******************************************************************************
-
-File Name:       system.c
-Dependencies:    USB Embedded Host library, MFI library
-Processor:       PIC32
-Company:         Microchip Technology, Inc.
-
-Copyright 2009-2012 Microchip Technology Inc.  All rights reserved.
-
-Microchip licenses to you the right to use, modify, copy and distribute
-Software only when embedded on a Microchip microcontroller or digital signal
-controller that is integrated into your product or third party product
-(pursuant to the sublicense terms in the accompanying license agreement).
-
-You should refer to the license agreement accompanying this Software for
-additional information regarding your rights and obligations.
-
-SOFTWARE AND DOCUMENTATION ARE PROVIDED �AS IS� WITHOUT WARRANTY OF ANY KIND,
-EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF
-MERCHANTABILITY, TITLE, NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
-IN NO EVENT SHALL MICROCHIP OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER
-CONTRACT, NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF WARRANTY, OR
-OTHER LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR EXPENSES
-INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE OR
-CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF PROCUREMENT OF
-SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
-(INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
-
- *******************************************************************************/
+////////////////////////////////////////////////////////////////////////////////
 #define     _SYSTEM_C_
 #include    "system.h"
-
 ////////////////////////////////////////////////////////////////////////////////
 
-UINT8 sysIntCount = 0;
+UINT8 sysIntCount = 1;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -66,18 +37,16 @@ VOID SYSTEM_Initialize ( VOID )
     TRISG  = 0b0000000110000000;
     ANSELG = 0b0000000000000000;
 
-// FIXME - PLL ready
-//    while ( OSCCONbits.SLOCK == 0 )
-//        Nop ( );
-//
-//    PB1DIV = 127;
-//    PB2DIV = _PB2DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
-//    PB3DIV = _PB3DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
-//    PB4DIV = _PB4DIV_ON_MASK + SYS_GetClock () / SYS_GetPeripheralClock () - 1;
-//    PB5DIV = _PB5DIV_ON_MASK;
-//    PB7DIV = _PB5DIV_ON_MASK;
-//    PB8DIV = 0;
-//    
+    PRECON = _PRECON_PREFEN_MASK + 2;               // Prefetch enable, 2 WS 
+    
+    PB1DIV = 1;                                     // Flash
+    PB2DIV = _PB2DIV_ON_MASK + SYSTEM_GetPBDiv ();  // PMP, I2C, UART, SPI
+    PB3DIV = _PB3DIV_ON_MASK + SYSTEM_GetPBDiv ();  // ADC, Comp, TMR, OC, IC
+    PB4DIV = _PB4DIV_ON_MASK + SYSTEM_GetPBDiv ();  // IO
+    PB5DIV = _PB5DIV_ON_MASK;                       // Crypto, RNG, USB, CAN, Eth
+    PB7DIV = _PB7DIV_ON_MASK;                       // CPU, DMT
+    PB8DIV = 0;                                     // EBI
+    
 //    FIXME - scan ?
 //    AD1CON1 = 0b1000011011100100;
 //    AD1CON2 = 0b0000010000010000;
@@ -89,16 +58,17 @@ VOID SYSTEM_Initialize ( VOID )
 
     TIME_Initialize ();
 
-//    FIXME - Tmr1 for 1ms int
-//    TMR1 = 0;
-//    T1CON = 0;
-//    PR1 = SYSTEM_GetPeripheralClock () / 1000;
-//    T1CONbits.TON = TRUE;
-//    IPC1bits.T1IP = 2;
-//    IFS0bits.T1IF = FALSE;
-//    IEC0bits.T1IE = TRUE;
-//
-//    SYSTEM_EnableInterrupts ();
+    TMR1 = 0;
+    T1CON = 0;
+    PR1 = SYSTEM_GetPeripheralClock () / 1000;
+    IPC1bits.T1IP = 2;
+    IFS0bits.T1IF = FALSE;
+    IEC0bits.T1IE = TRUE;
+    T1CONbits.TON = TRUE;
+
+    PRISS = 0x76543210;
+    INTCONSET = _INTCON_MVEC_MASK;
+    SYSTEM_EnableInterrupts ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -119,14 +89,14 @@ VOID SYSTEM_EnableInterrupts ( VOID )
         SYSTEM_Halt ();        
     
     if ( sysIntCount == 0 )
-        asm volatile("ei");
+        __builtin_enable_interrupts ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 VOID SYSTEM_DisableInterrupts ( VOID )
 {
-    asm volatile("di");
+    __builtin_disable_interrupts ();
     
     if ( sysIntCount < 255 )
         sysIntCount ++;
@@ -141,27 +111,43 @@ UINT16 SYS_GetADC ( UINT8 chn )
 //    return (( &ADC1BUF0 )[chn] );
 }
 
-// FIXME - interrupts
-//////////////////////////////////////////////////////////////////////////////////
-//// Application Interrupts
-//////////////////////////////////////////////////////////////////////////////////
-//
-//VOID ISR _T1Interrupt ( VOID )
+////////////////////////////////////////////////////////////////////////////////
+// Application Interrupts
+////////////////////////////////////////////////////////////////////////////////
+
+//VOID __ISR ( _TIMER_1_VECTOR, IPL2SRS ) _T1Interrupt ( VOID )
 //{
-//    IFS0bits.T1IF = FALSE;
-//    SYSTEM_T1Interrupt ();
+//    IFS0CLR = _IFS0_T1IF_MASK;
+//    SYSTEM_T1InterruptHandler ();
 //}
-//
-//////////////////////////////////////////////////////////////////////////////////
-//// System Interrupts
-//////////////////////////////////////////////////////////////////////////////////
-//
-//VOID ISR _DefaultInterrupt ( void )
-//{
-//    SYSTEM_Halt ();
-//    Nop();
-//    Nop();
-//}
+
+////////////////////////////////////////////////////////////////////////////////
+
+VOID __ISR ( _UART1_RX_VECTOR, IPL4SRS ) SYSTEM_Uart1RxInterrupt ( VOID )
+{
+    IFS3CLR = _IFS3_U1RXIF_MASK;
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// System Interrupts
+////////////////////////////////////////////////////////////////////////////////
+
+VOID _DefaultInterrupt ( VOID )
+{
+    SYSTEM_Halt ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+VOID _general_exception_handler ( UINT32 cause, UINT32 status )
+{
+    
+    
+    SYSTEM_Halt ();
+    Nop();
+    Nop();
+}
 //////////////////////////////////////////////////////////////////////////////////
 //VOID ISR _OscillatorFail ( void )
 //{

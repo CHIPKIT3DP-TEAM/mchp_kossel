@@ -44,28 +44,18 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 ////////////////////////////////////////////////////////////////////////////////
 
-volatile UINT16 time1ms, time100ms;
-static UINT16 div100ms;
+volatile UINT32 time1ms;
 static volatile UINT32 timeCycles;
 
 ////////////////////////////////////////////////////////////////////////////////
 VOID TIME_Initialize ( VOID )
 {
     time1ms = 0;
-    time100ms = 0;
-    div100ms = 0;
 }
 ////////////////////////////////////////////////////////////////////////////////
-VOID TIME_Task ( UINT16 time )
+VOID TIME_Update ( UINT32 time )
 {
-    time1ms += time;
-    
-    div100ms += time;
-    while ( div100ms >= 100 )
-    {
-        time100ms ++;
-        div100ms -= 100;
-    }    
+    time1ms += time;  
 }
 ////////////////////////////////////////////////////////////////////////////////
 VOID TIME_Delay10us ( UINT16 delay )
@@ -94,51 +84,28 @@ VOID TIME_Delay10us ( UINT16 delay )
     #endif
 }
 ////////////////////////////////////////////////////////////////////////////////
-VOID TIME_Delay1ms ( UINT16 delay )
+VOID TIME_Delay1ms ( UINT32 delay )
 {
     delay += time1ms + 1;
     
-    while ( delay - time1ms < 0x8000u )
+    while ((INT32)( delay - time1ms ) < 0 )
     {
-        #if defined ( __C30__ ) || defined ( __XC16__ )
-            Idle ();
-        #else
-            Nop();
-            Nop();
-            Nop();
-        #endif
+        SYSTEM_Idle ();
     }
 }
 ////////////////////////////////////////////////////////////////////////////////
-UINT16 TIME_Get1ms ( VOID )
+UINT32 TIME_Get1ms ( VOID )
 {
     return ( time1ms );
 }
 ////////////////////////////////////////////////////////////////////////////////
-UINT16 TIME_Get100ms ( VOID )
+BOOL TIME_Elapsed1ms ( UINT32 time )
 {
-    return ( time100ms );
+    return ((INT32)( time - time1ms ) < 0 );
 }
 ////////////////////////////////////////////////////////////////////////////////
-BOOL TIME_Elapsed1ms ( UINT16 time )
-{
-    time -= time1ms;
-    return ( time >= 0x8000 );
-}
-////////////////////////////////////////////////////////////////////////////////
-BOOL TIME_Elapsed100ms ( UINT16 time )
-{
-    time -= time100ms;
-    return ( time >= 0x8000 );
-}
-////////////////////////////////////////////////////////////////////////////////
-UINT16 TIME_Passed1ms ( UINT16 time )
+UINT32 TIME_Passed1ms ( UINT32 time )
 {
     return ( time1ms - time );
-}
-////////////////////////////////////////////////////////////////////////////////
-UINT16 TIME_Passed100ms ( UINT16 time )
-{
-    return ( time100ms - time );
 }
 ////////////////////////////////////////////////////////////////////////////////
