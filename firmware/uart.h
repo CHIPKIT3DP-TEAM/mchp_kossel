@@ -130,7 +130,7 @@ UART_CONFIG;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define UART_MODULE_COUNT           5
+#define UART_MODULE_COUNT           6
 #define UART_UXMODE_INIT_MASK       0b0000000000001000
 #define UART_UXSTA_INIT_MASK        0b0000000000000000
 #define UART_UXSTA_ERROR_MASK       0b0000000000001110
@@ -142,6 +142,7 @@ UART_CONFIG;
 #define UART3                       &uartModule[2]
 #define UART4                       &uartModule[3]
 #define UART5                       &uartModule[4]
+#define UART6                       &uartModule[5]
 
 ///////////////////////////////////////////////////////////////////////////////
 

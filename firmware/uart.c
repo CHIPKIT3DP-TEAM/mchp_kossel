@@ -64,6 +64,12 @@ UART_MODULE uartModule[UART_MODULE_COUNT] =
         (SYSTEM_SFR*) &IEC2, _IEC5_U5TXIE_MASK,
         (SYSTEM_SFR*) &IEC2, _IEC5_U5EIE_MASK
     },
+    {
+        (UART_REGS*) _UART6_BASE_ADDRESS,
+        (SYSTEM_SFR*) &IEC2, _IEC5_U6RXIE_MASK,
+        (SYSTEM_SFR*) &IEC2, _IEC5_U6TXIE_MASK,
+        (SYSTEM_SFR*) &IEC2, _IEC5_U6EIE_MASK
+    },
 };
 
 ////////////////////////////////////////////////////////////////////////////////
