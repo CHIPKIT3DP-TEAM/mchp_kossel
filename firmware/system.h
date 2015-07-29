@@ -38,8 +38,9 @@ SYSTEM_SFR;
 
 #ifdef _SYSTEM_C_
 
-    #include "time.h"
     #include <sys/attribs.h>
+    #include "time.h"
+    #include "uart.h"
 
     #pragma config FMIIEN = OFF             // Ethernet RMII/MII Enable (RMII Enabled)
     #pragma config FETHIO = OFF             // Ethernet I/O Pin Select (Alternate Ethernet I/O)
@@ -51,12 +52,14 @@ SYSTEM_SFR;
     #pragma config FPLLRNG = RANGE_5_10_MHZ // System PLL Input Range (5-10 MHz Input)
     #pragma config FPLLICLK = PLL_POSC      // System PLL Input Clock Selection (POSC is input to the System PLL)
     #pragma config FPLLMULT = MUL_50        // System PLL Multiplier (PLL Multiply by 50)
+    #pragma config FPLLODIV = DIV_2         // System PLL Output Clock Divider (2x Divider)
     #pragma config UPLLFSEL = FREQ_24MHZ    // USB PLL Input Frequency Selection (USB PLL input is 24 MHz)
+    #pragma config UPLLEN = ON              // USB PLL Enable (USB PLL is enabled)
     #pragma config FNOSC = SPLL             // Oscillator Selection Bits (System PLL)
     #pragma config DMTINTV = WIN_127_128    // DMT Count Window Interval (Window/Interval value is 127/128 counter value)
     #pragma config FSOSCEN = OFF            // Secondary Oscillator Enable (Disable SOSC)
     #pragma config IESO = ON                // Internal/External Switch Over (Enabled)
-    #pragma config POSCMOD = EC             // Primary Oscillator Configuration (Primary osc uses external clock)
+    #pragma config POSCMOD = EC             // Primary Oscillator Configuration (External clock mode)
     #pragma config OSCIOFNC = OFF           // CLKO Output Signal Active on the OSCO Pin (Disabled)
     #pragma config FCKSM = CSECME           // Clock Switching and Monitor Selection (Clock Switch Enabled, FSCM Enabled)
     #pragma config WDTPS = PS1048576        // Watchdog Timer Postscaler (1:1048576)
@@ -64,6 +67,7 @@ SYSTEM_SFR;
     #pragma config WINDIS = NORMAL          // Watchdog Timer Window Mode (Watchdog Timer is in non-Window mode)
     #pragma config FWDTEN = OFF             // Watchdog Timer Enable (WDT Disabled)
     #pragma config FWDTWINSZ = WINSZ_25     // Watchdog Timer Window Size (Window size is 25%)
+    #pragma config DMTCNT = DMT31           // Deadman Timer Count Selection (2^31 (2147483648))
     #pragma config FDMTEN = OFF             // Deadman Timer Enable (Deadman Timer is disabled)
     #pragma config DEBUG = OFF              // Background Debugger Enable (Debugger is disabled)
     #pragma config JTAGEN = OFF             // JTAG Enable (JTAG Disabled)
@@ -96,10 +100,20 @@ SYSTEM_SFR;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define SYS_LED_SYSTEM           0b0001
-#define SYS_LED_1                0b0010
-#define SYS_LED_2                0b0100
-#define SYS_LED_3                0b1000
+#define SYSTEM_LED1On()          LATGSET = 1<<6
+#define SYSTEM_LED2On()          LATDSET = 1<<4
+#define SYSTEM_LED3On()          LATBSET = 1<<11
+#define SYSTEM_LED4On()          LATGSET = 1<<15
+
+#define SYSTEM_LED1Off()         LATGCLR = 1<<6
+#define SYSTEM_LED2Off()         LATDCLR = 1<<4
+#define SYSTEM_LED3Off()         LATBCLR = 1<<11
+#define SYSTEM_LED4Off()         LATGCLR = 1<<15
+
+#define SYSTEM_LED1Toggle()      LATGINV = 1<<6
+#define SYSTEM_LED2Toggle()      LATDINV = 1<<4
+#define SYSTEM_LED3Toggle()      LATBINV = 1<<11
+#define SYSTEM_LED4Toggle()      LATGINV = 1<<15
 
 #define SYS_AD_BED               4
 #define SYS_AD_12V               5

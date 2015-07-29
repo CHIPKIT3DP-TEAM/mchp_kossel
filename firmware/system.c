@@ -33,19 +33,24 @@ VOID SYSTEM_Initialize ( VOID )
     TRISF  = 0b0000000000101111;
     ANSELF = 0b0000000000000000;
 
-    LATG   = 0b0000000000000000;
+    LATG   = 0b0000000000000010;
     TRISG  = 0b0000000110000000;
     ANSELG = 0b0000000000000000;
 
     PRECON = _PRECON_PREFEN_MASK + 2;               // Prefetch enable, 2 WS 
     
-    PB1DIV = 1;                                     // Flash
-    PB2DIV = _PB2DIV_ON_MASK + SYSTEM_GetPBDiv ();  // PMP, I2C, UART, SPI
-    PB3DIV = _PB3DIV_ON_MASK + SYSTEM_GetPBDiv ();  // ADC, Comp, TMR, OC, IC
-    PB4DIV = _PB4DIV_ON_MASK + SYSTEM_GetPBDiv ();  // IO
-    PB5DIV = _PB5DIV_ON_MASK;                       // Crypto, RNG, USB, CAN, Eth
-    PB7DIV = _PB7DIV_ON_MASK;                       // CPU, DMT
-    PB8DIV = 0;                                     // EBI
+    SYSKEY = 0xAA996655;
+    SYSKEY = 0x556699AA;
+    {
+        PB1DIV = 1;                                     // Flash
+        PB2DIV = _PB2DIV_ON_MASK + SYSTEM_GetPBDiv ();  // PMP, I2C, UART, SPI
+        PB3DIV = _PB3DIV_ON_MASK + SYSTEM_GetPBDiv ();  // ADC, Comp, TMR, OC, IC
+        PB4DIV = _PB4DIV_ON_MASK + SYSTEM_GetPBDiv ();  // IO
+        PB5DIV = _PB5DIV_ON_MASK;                       // Crypto, RNG, USB, CAN, Eth
+        PB7DIV = _PB7DIV_ON_MASK;                       // CPU, DMT
+        PB8DIV = 0;                                     // EBI
+    }
+    SYSKEY = 0;
     
 //    FIXME - scan ?
 //    AD1CON1 = 0b1000011011100100;
@@ -75,8 +80,10 @@ VOID SYSTEM_Initialize ( VOID )
 
 VOID SYSTEM_Idle ( VOID )
 {
-    // FIXME - activity LED indication ?
+    SYSTEM_LED4Off ();
+    _nop ();
     _wait ();
+    SYSTEM_LED4On ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -115,65 +122,52 @@ UINT16 SYS_GetADC ( UINT8 chn )
 // Application Interrupts
 ////////////////////////////////////////////////////////////////////////////////
 
-//VOID __ISR ( _TIMER_1_VECTOR, IPL2SRS ) _T1Interrupt ( VOID )
-//{
-//    IFS0CLR = _IFS0_T1IF_MASK;
-//    SYSTEM_T1InterruptHandler ();
-//}
+VOID __ISR_AT_VECTOR ( _TIMER_1_VECTOR, IPL2SRS ) SYSTEM_Timer1Interrupt ( VOID )
+{
+    IFS0CLR = _IFS0_T1IF_MASK;
+    SYSTEM_T1InterruptHandler ();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID __ISR ( _UART1_RX_VECTOR, IPL4SRS ) SYSTEM_Uart1RxInterrupt ( VOID )
+VOID __ISR_AT_VECTOR ( _UART1_RX_VECTOR, IPL4SRS ) SYSTEM_UART1RxInterrupt ( VOID )
 {
     IFS3CLR = _IFS3_U1RXIF_MASK;
+    UART_RxInt ( UART1 );
+}
 
+////////////////////////////////////////////////////////////////////////////////
+
+VOID __ISR_AT_VECTOR ( _UART1_TX_VECTOR, IPL3SRS ) SYSTEM_UART1TxInterrupt ( VOID )
+{
+    IFS3CLR = _IFS3_U1TXIF_MASK;
+    UART_TxInt ( UART1 );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+VOID __ISR_AT_VECTOR ( _UART1_FAULT_VECTOR, IPL3SRS ) SYSTEM_UART1ErrorInterrupt ( VOID )
+{
+    IFS3CLR = _IFS3_U1EIF_MASK;
+    UART_ErrorInt ( UART1 );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // System Interrupts
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID _DefaultInterrupt ( VOID )
-{
-    SYSTEM_Halt ();
-}
+// overloading doesn't work, use system-defined
+//VOID _DefaultInterrupt ( VOID )
+//{
+//    SYSTEM_Halt ();
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 
 VOID _general_exception_handler ( UINT32 cause, UINT32 status )
 {
-    
-    
     SYSTEM_Halt ();
     Nop();
     Nop();
 }
-//////////////////////////////////////////////////////////////////////////////////
-//VOID ISR _OscillatorFail ( void )
-//{
-//    SYSTEM_Halt ();
-//    Nop();
-//    Nop();
-//}
-//////////////////////////////////////////////////////////////////////////////////
-//VOID ISR _AddressError ( void )
-//{
-//    SYSTEM_Halt ();
-//    Nop();
-//    Nop();
-//}
-//////////////////////////////////////////////////////////////////////////////////
-//VOID ISR _StackError ( void )
-//{
-//    SYSTEM_Halt ();
-//    Nop();
-//    Nop();
-//}
-//////////////////////////////////////////////////////////////////////////////////
-//VOID ISR _MathError ( void )
-//{
-//    SYSTEM_Halt ();
-//    Nop();
-//    Nop();
-//}
-//////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
