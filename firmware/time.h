@@ -47,15 +47,12 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system.h"
 
 VOID TIME_Initialize ( VOID );
-VOID TIME_Task ( UINT16 time );
+VOID TIME_Update ( UINT32 time );
 VOID TIME_Delay10us( UINT16 time );
-VOID TIME_Delay1ms ( UINT16 time );
-UINT16 TIME_Get1ms ( VOID );
-UINT16 TIME_Get100ms ( VOID );
-BOOL TIME_Elapsed1ms ( UINT16 time );
-BOOL TIME_Elapsed100ms ( UINT16 time );
-UINT16 TIME_Passed1ms ( UINT16 time );
-UINT16 TIME_Passed100ms ( UINT16 time );
+VOID TIME_Delay1ms ( UINT32 time );
+UINT32 TIME_Get1ms ( VOID );
+BOOL TIME_Elapsed1ms ( UINT32 time );
+UINT32 TIME_Passed1ms ( UINT32 time );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
