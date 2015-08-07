@@ -1,29 +1,19 @@
-/*
-    This file is part of Repetier-Firmware.
-
-    Repetier-Firmware is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    Repetier-Firmware is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with Repetier-Firmware.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
-
+////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+////////////////////////////////////////////////////////////////////////////////
 #ifndef _SYSTEM_H_
 #define _SYSTEM_H_
-
+////////////////////////////////////////////////////////////////////////////////
 #include <xc.h>
 #include <GenericTypeDefs.h>
+////////////////////////////////////////////////////////////////////////////////
 
 #define SYSTEM_Halt()       __builtin_software_breakpoint ()
 #define INLINE              extern inline __attribute__((always_inline))
+
+////////////////////////////////////////////////////////////////////////////////
 
 typedef float   FLOAT;
 
@@ -35,6 +25,8 @@ typedef struct
     volatile INT32 INV;
 }
 SYSTEM_SFR;
+
+////////////////////////////////////////////////////////////////////////////////
 
 #ifdef _SYSTEM_C_
 
@@ -100,26 +92,32 @@ SYSTEM_SFR;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define SYSTEM_LED1On()          LATGSET = 1<<6
-#define SYSTEM_LED2On()          LATDSET = 1<<4
-#define SYSTEM_LED3On()          LATBSET = 1<<11
-#define SYSTEM_LED4On()          LATGSET = 1<<15
+#define SYSTEM_LED1On()         LATGSET = 1<<6
+#define SYSTEM_LED2On()         LATDSET = 1<<4
+#define SYSTEM_LED3On()         LATBSET = 1<<11
+#define SYSTEM_LED4On()         LATGSET = 1<<15
 
-#define SYSTEM_LED1Off()         LATGCLR = 1<<6
-#define SYSTEM_LED2Off()         LATDCLR = 1<<4
-#define SYSTEM_LED3Off()         LATBCLR = 1<<11
-#define SYSTEM_LED4Off()         LATGCLR = 1<<15
+#define SYSTEM_LED1Off()        LATGCLR = 1<<6
+#define SYSTEM_LED2Off()        LATDCLR = 1<<4
+#define SYSTEM_LED3Off()        LATBCLR = 1<<11
+#define SYSTEM_LED4Off()        LATGCLR = 1<<15
 
-#define SYSTEM_LED1Toggle()      LATGINV = 1<<6
-#define SYSTEM_LED2Toggle()      LATDINV = 1<<4
-#define SYSTEM_LED3Toggle()      LATBINV = 1<<11
-#define SYSTEM_LED4Toggle()      LATGINV = 1<<15
+#define SYSTEM_LED1Toggle()     LATGINV = 1<<6
+#define SYSTEM_LED2Toggle()     LATDINV = 1<<4
+#define SYSTEM_LED3Toggle()     LATBINV = 1<<11
+#define SYSTEM_LED4Toggle()     LATGINV = 1<<15
 
-#define SYS_AD_BED               4
-#define SYS_AD_12V               5
-#define SYS_AD_THERM0            12
-#define SYS_AD_THERM1            13
-#define SYS_AD_THERM2            14
+#define SYS_AD_BED              4
+#define SYS_AD_12V              5
+#define SYS_AD_THERM0           12
+#define SYS_AD_THERM1           13
+#define SYS_AD_THERM2           14
+
+#define UART_PC                 UART4
+#define UART_PC_BAUDRATE        250000
+
+#define UART_BUS                UART1
+#define UART_BUS_BAUDRATE       20000
 
 ////////////////////////////////////////////////////////////////////////////////
 

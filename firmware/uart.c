@@ -36,45 +36,45 @@ UART_MODULE uartModule[UART_MODULE_COUNT] =
 {
     {
         (UART_REGS*) _UART1_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC1, _IEC3_U1RXIE_MASK,
-        (SYSTEM_SFR*) &IEC1, _IEC3_U1TXIE_MASK,
-        (SYSTEM_SFR*) &IEC1, _IEC3_U1EIE_MASK
+        (SYSTEM_SFR*) &IEC3, _IEC3_U1RXIE_MASK,
+        (SYSTEM_SFR*) &IEC3, _IEC3_U1TXIE_MASK,
+        (SYSTEM_SFR*) &IEC3, _IEC3_U1EIE_MASK
     },
     {
         (UART_REGS*) _UART2_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC1, _IEC4_U2RXIE_MASK,
-        (SYSTEM_SFR*) &IEC1, _IEC4_U2TXIE_MASK,
-        (SYSTEM_SFR*) &IEC1, _IEC4_U2EIE_MASK
+        (SYSTEM_SFR*) &IEC4, _IEC4_U2RXIE_MASK,
+        (SYSTEM_SFR*) &IEC4, _IEC4_U2TXIE_MASK,
+        (SYSTEM_SFR*) &IEC4, _IEC4_U2EIE_MASK
     },
     {
         (UART_REGS*) _UART3_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC1, _IEC4_U3RXIE_MASK,
-        (SYSTEM_SFR*) &IEC2, _IEC4_U3TXIE_MASK,
-        (SYSTEM_SFR*) &IEC1, _IEC4_U3EIE_MASK
+        (SYSTEM_SFR*) &IEC4, _IEC4_U3RXIE_MASK,
+        (SYSTEM_SFR*) &IEC4, _IEC4_U3TXIE_MASK,
+        (SYSTEM_SFR*) &IEC4, _IEC4_U3EIE_MASK
     },
     {
         (UART_REGS*) _UART4_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U4RXIE_MASK,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U4TXIE_MASK,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U4EIE_MASK
+        (SYSTEM_SFR*) &IEC5, _IEC5_U4RXIE_MASK,
+        (SYSTEM_SFR*) &IEC5, _IEC5_U4TXIE_MASK,
+        (SYSTEM_SFR*) &IEC5, _IEC5_U4EIE_MASK
     },
     {
         (UART_REGS*) _UART5_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U5RXIE_MASK,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U5TXIE_MASK,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U5EIE_MASK
+        (SYSTEM_SFR*) &IEC5, _IEC5_U5RXIE_MASK,
+        (SYSTEM_SFR*) &IEC5, _IEC5_U5TXIE_MASK,
+        (SYSTEM_SFR*) &IEC5, _IEC5_U5EIE_MASK
     },
     {
         (UART_REGS*) _UART6_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U6RXIE_MASK,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U6TXIE_MASK,
-        (SYSTEM_SFR*) &IEC2, _IEC5_U6EIE_MASK
+        (SYSTEM_SFR*) &IEC5, _IEC5_U6RXIE_MASK,
+        (SYSTEM_SFR*) &IEC5, _IEC5_U6TXIE_MASK,
+        (SYSTEM_SFR*) &IEC5, _IEC5_U6EIE_MASK
     },
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL UART_Open ( UART_HANDLE uart, const UART_CONFIG *cfg )
+BOOL UART_Initialize ( UART_HANDLE uart, const UART_CONFIG *cfg )
 {
     // TODO: check uart for validity
 
@@ -87,35 +87,22 @@ BOOL UART_Open ( UART_HANDLE uart, const UART_CONFIG *cfg )
     uart->EventHandler = cfg->EventHandler;
 
     if ( cfg->stopBits > 1 )
-    {
         uart->regs->UxMODEbits.STSEL = 1;
-    }
     
     if ( cfg->flowControl )
     {
         uart->regs->UxMODEbits.RTSMD = 0;
         uart->regs->UxMODEbits.UEN = 2;
     }
-    
+
+    if ( uart->regs->UxMODEbits.BRGH )
+        uart->regs->UxBRG = ( SYSTEM_GetPeripheralClock () / cfg->baudrate - 2 ) / 4;
+    else
+        uart->regs->UxBRG = ( SYSTEM_GetPeripheralClock () / cfg->baudrate - 8 ) / 16;
+
     uart->intRegs.errorIEC->SET = uart->intRegs.errorMask;
     
     uart->regs->UxMODEbits.ON = TRUE;
-
-    return ( TRUE );
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-BOOL UART_SetBaudrate ( UART_HANDLE uart, UINT32 baudrate )
-{
-    if ( uart->regs->UxMODEbits.BRGH )
-    {
-        uart->regs->UxBRG = ( SYSTEM_GetPeripheralClock () / baudrate - 2 ) / 4;
-    }
-    else
-    {
-        uart->regs->UxBRG = ( SYSTEM_GetPeripheralClock () / baudrate - 8 ) / 16;
-    }
 
     return ( TRUE );
 }
@@ -192,7 +179,7 @@ VOID UART_RxInt ( UART_HANDLE uart )
     if ( ++uart->rxCount == uart->rxSize )
     {
         UART_DisableRxInt ( uart );
-        uart->EventHandler ( UART_EVENT_RECEIVED, uart->rxBuffer, uart->rxCount );
+        uart->EventHandler ( uart, UART_EVENT_RECEIVED, uart->rxBuffer, uart->rxCount );
     }
 }
 
@@ -204,7 +191,7 @@ VOID UART_TxInt ( UART_HANDLE uart )
     if ( --uart->txCount == 0 )
     {
         UART_DisableTxInt ( uart );
-        uart->EventHandler ( UART_EVENT_SENT, uart->txBuffer, uart->txSize );
+        uart->EventHandler ( uart, UART_EVENT_SENT, uart->txBuffer, uart->txSize );
     }
 }
 
@@ -213,6 +200,7 @@ VOID UART_TxInt ( UART_HANDLE uart )
 VOID UART_ErrorInt ( UART_HANDLE uart )
 {
 //    ASSERT ( FALSE );
+    uart->EventHandler ( uart, uart->regs->UxSTA & UART_UXSTA_ERROR_MASK, NULL, 0 );
     uart->regs->UxSTACLR = UART_UXSTA_ERROR_MASK;
 }
 

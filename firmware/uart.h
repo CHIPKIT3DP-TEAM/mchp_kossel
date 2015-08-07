@@ -84,16 +84,20 @@ UART_INT_REGS;
 
 typedef enum
 {
-    UART_EVENT_SENT,
-    UART_EVENT_RECEIVED
+    UART_EVENT_SENT             = 0x00,
+    UART_EVENT_RECEIVED         = 0x01,
+    UART_EVENT_ERROR_OVERFLOW   = 0x02,
+    UART_EVENT_ERROR_FRAMING    = 0x04,
+    UART_EVENT_ERROR_PARITY     = 0x08
 }
 UART_EVENT;
 
-typedef struct
+typedef struct UART_MODULE *UART_HANDLE;
+typedef struct UART_MODULE
 {
     UART_REGS *regs;
     UART_INT_REGS intRegs;
-    BOOL (*EventHandler) ( UART_EVENT event, const UINT8 * data, const UINT16 dataSize );
+    BOOL (*EventHandler) ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
 
     UINT8 *rxBuffer;
     UINT8 *rxPtr;
@@ -106,7 +110,7 @@ typedef struct
     UINT16 txSize;
     UINT16 txCount;
 }
-volatile UART_MODULE, *UART_HANDLE;
+UART_MODULE;
 
 #define UART_PATTERN_NONE       0xFFFF
 
@@ -121,7 +125,8 @@ UART_DATA_PARITY;
 
 typedef struct
 {
-    BOOL (*EventHandler) ( UART_EVENT event, const UINT8 * data, const UINT16 dataSize );
+    BOOL (*EventHandler) ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
+    UINT32 baudrate;
     UINT8 dataParity    :2;
     UINT8 stopBits      :2;
     UINT8 flowControl   :1;
@@ -150,8 +155,7 @@ extern UART_MODULE uartModule[UART_MODULE_COUNT];
 
 ///////////////////////////////////////////////////////////////////////////////
 
-BOOL UART_Open ( UART_HANDLE uart, const UART_CONFIG *cfg );
-BOOL UART_SetBaudrate ( UART_HANDLE uart, UINT32 baudrate );
+BOOL UART_Initialize ( UART_HANDLE uart, const UART_CONFIG *cfg );
 BOOL UART_Transmit ( UART_HANDLE uart, const UINT8 *data, const UINT16 size );
 BOOL UART_Receive ( UART_HANDLE uart, UINT8 *data, const UINT16 size );
 BOOL UART_Discard ( UART_HANDLE uart, const UINT16 size );

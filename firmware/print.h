@@ -3,20 +3,15 @@
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _PRINT_H_
+#define _PRINT_H_
 ////////////////////////////////////////////////////////////////////////////////
 #include "system.h"
 #include "uart.h"
-#include "print.h"
-//#include "heater.h"
-//#include "drive.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID MAIN_Initialize ( VOID );
-VOID FloatToUART ( UART_HANDLE *uart, FLOAT number, UINT8 fract );
-BOOL UART_PC_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
-BOOL UART_BUS_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
+VOID Print ( CHAR *str );
+VOID PrintFLOAT ( FLOAT number, UINT8 fract );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
