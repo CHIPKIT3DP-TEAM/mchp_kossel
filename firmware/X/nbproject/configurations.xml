@@ -4,20 +4,26 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="bsp" projectFiles="true">
+        <itemPath>../bsp/mcp47feb.h</itemPath>
+        <itemPath>../bsp/mcp9800.h</itemPath>
+        <itemPath>../bsp/mcp98244.h</itemPath>
+        <itemPath>../bsp/ocmp.h</itemPath>
+        <itemPath>../bsp/spi.h</itemPath>
+        <itemPath>../bsp/uart.h</itemPath>
+        <itemPath>../bsp/i2c.h</itemPath>
+        <itemPath>../bsp/dma.h</itemPath>
+      </logicalFolder>
       <itemPath>../main.h</itemPath>
       <itemPath>../system.h</itemPath>
       <itemPath>../time.h</itemPath>
-      <itemPath>../uart.h</itemPath>
       <itemPath>../drive/drive.h</itemPath>
       <itemPath>../drive/drive_config.h</itemPath>
       <itemPath>../drive/kinematics.h</itemPath>
       <itemPath>../drive/planner.h</itemPath>
       <itemPath>../drive/stepper.h</itemPath>
-      <itemPath>../ocmp.h</itemPath>
       <itemPath>../print.h</itemPath>
       <itemPath>../bus.h</itemPath>
-      <itemPath>../i2c.h</itemPath>
-      <itemPath>../spi.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,19 +32,25 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="bsp" projectFiles="true">
+        <itemPath>../bsp/dma.c</itemPath>
+        <itemPath>../bsp/i2c.c</itemPath>
+        <itemPath>../bsp/mcp47feb.c</itemPath>
+        <itemPath>../bsp/mcp9800.c</itemPath>
+        <itemPath>../bsp/mcp98244.c</itemPath>
+        <itemPath>../bsp/ocmp.c</itemPath>
+        <itemPath>../bsp/spi.c</itemPath>
+        <itemPath>../bsp/uart.c</itemPath>
+      </logicalFolder>
       <itemPath>../main.c</itemPath>
       <itemPath>../system.c</itemPath>
       <itemPath>../time.c</itemPath>
-      <itemPath>../uart.c</itemPath>
       <itemPath>../drive/drive.c</itemPath>
       <itemPath>../drive/kinematics.c</itemPath>
       <itemPath>../drive/planner.c</itemPath>
       <itemPath>../drive/stepper.c</itemPath>
-      <itemPath>../ocmp.c</itemPath>
       <itemPath>../print.c</itemPath>
       <itemPath>../bus.c</itemPath>
-      <itemPath>../i2c.c</itemPath>
-      <itemPath>../spi.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -54,7 +66,7 @@
     <conf name="default" type="2">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <targetDevice>PIC32MZ2048ECG100</targetDevice>
+        <targetDevice>PIC32MZ2048EFM100</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD3PlatformTool</platformTool>
@@ -94,9 +106,9 @@
         <property key="extra-include-directories" value="../"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
-        <property key="isolate-each-function" value="false"/>
+        <property key="isolate-each-function" value="true"/>
         <property key="make-warnings-into-errors" value="false"/>
-        <property key="optimization-level" value=""/>
+        <property key="optimization-level" value="-O1"/>
         <property key="place-data-into-section" value="false"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
@@ -132,9 +144,9 @@
         <property key="map-file" value="${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"/>
         <property key="no-startup-files" value="false"/>
         <property key="oXC32ld-extra-opts" value=""/>
-        <property key="optimization-level" value=""/>
+        <property key="optimization-level" value="-Os"/>
         <property key="preprocessor-macros" value=""/>
-        <property key="remove-unused-sections" value="false"/>
+        <property key="remove-unused-sections" value="true"/>
         <property key="report-memory-usage" value="false"/>
         <property key="stack-size" value=""/>
         <property key="symbol-stripping" value=""/>
@@ -176,7 +188,10 @@
         <property key="wpo-lto" value="false"/>
       </C32Global>
       <ICD3PlatformTool>
+        <property key="ADC" value="true"/>
         <property key="AutoSelectMemRanges" value="auto"/>
+        <property key="CAN1" value="true"/>
+        <property key="CAN2" value="true"/>
         <property key="CHANGE NOTICE A" value="true"/>
         <property key="CHANGE NOTICE B" value="true"/>
         <property key="CHANGE NOTICE C" value="true"/>
@@ -238,7 +253,6 @@
         <property key="UART5" value="true"/>
         <property key="UART6" value="true"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="false"/>

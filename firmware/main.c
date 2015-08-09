@@ -97,7 +97,7 @@ INT main ( VOID )
         {
             timemark1s += 1000;
             
-            Print ( "assa" );
+            Print ( "assa\r\n" );
         }
 
         SYSTEM_Idle ();

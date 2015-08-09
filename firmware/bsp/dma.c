@@ -33,34 +33,14 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 DMA_CHANNEL dmaChannel[DMA_CHANNEL_COUNT] =
 {
-    #ifdef DMA0
-        {
-            (DMA_REGS*) _DMAC0_BASE_ADDRESS,
-        },
-        {
-            (DMA_REGS*) _DMAC1_BASE_ADDRESS,
-        },
-        {
-            (DMA_REGS*) _DMAC2_BASE_ADDRESS,
-        },
-        {
-            (DMA_REGS*) _DMAC3_BASE_ADDRESS,
-        },
-    #endif
-    #ifdef DMA4
-        {
-            (DMA_REGS*) _DMAC4_BASE_ADDRESS,
-        },
-        {
-            (DMA_REGS*) _DMAC5_BASE_ADDRESS,
-        },
-        {
-            (DMA_REGS*) _DMAC6_BASE_ADDRESS,
-        },
-        {
-            (DMA_REGS*) _DMAC7_BASE_ADDRESS,
-        },
-    #endif
+    { (DMA_REGS*)&DCH0CON },
+    { (DMA_REGS*)&DCH1CON },
+    { (DMA_REGS*)&DCH2CON },
+    { (DMA_REGS*)&DCH3CON },
+    { (DMA_REGS*)&DCH4CON },
+    { (DMA_REGS*)&DCH5CON },
+    { (DMA_REGS*)&DCH6CON },
+    { (DMA_REGS*)&DCH7CON }
 };
 
 ////////////////////////////////////////////////////////////////////////////////

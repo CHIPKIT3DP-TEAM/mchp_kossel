@@ -3,20 +3,15 @@
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _MCP47FEB_H_
+#define _MCP47FEB_H_
 ////////////////////////////////////////////////////////////////////////////////
 #include "system.h"
-#include "print.h"
-#include "bsp/uart.h"
-//#include "heater.h"
-//#include "drive.h"
+#include "bsp/i2c.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID MAIN_Initialize ( VOID );
-VOID FloatToUART ( UART_HANDLE *uart, FLOAT number, UINT8 fract );
-BOOL UART_PC_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
-BOOL UART_BUS_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
+BOOL MCP47FEB_Initialize ( UINT8 addr );
+BOOL MCP47FEB_SetValue ( UINT8 addr, UINT8 channel, UINT16 value );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif

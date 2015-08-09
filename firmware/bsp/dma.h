@@ -169,24 +169,15 @@ DMA_CONFIG;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifdef _DMAC7_BASE_ADDRESS
-    #define DMA7                    ( &dmaChannel[7] )
-    #define DMA6                    ( &dmaChannel[6] )
-    #define DMA5                    ( &dmaChannel[5] )
-    #define DMA4                    ( &dmaChannel[4] )
-    #ifndef DMA_CHANNEL_COUNT
-        #define DMA_CHANNEL_COUNT   8
-    #endif
-#endif
-#ifdef _DMAC3_BASE_ADDRESS
-    #define DMA3                    ( &dmaChannel[3] )
-    #define DMA2                    ( &dmaChannel[2] )
-    #define DMA1                    ( &dmaChannel[1] )
-    #define DMA0                    ( &dmaChannel[0] )
-    #ifndef DMA_CHANNEL_COUNT
-        #define DMA_CHANNEL_COUNT   4
-    #endif
-#endif
+#define DMA_CHANNEL_COUNT       8
+#define DMA7                    ( &dmaChannel[7] )
+#define DMA6                    ( &dmaChannel[6] )
+#define DMA5                    ( &dmaChannel[5] )
+#define DMA4                    ( &dmaChannel[4] )
+#define DMA3                    ( &dmaChannel[3] )
+#define DMA2                    ( &dmaChannel[2] )
+#define DMA1                    ( &dmaChannel[1] )
+#define DMA0                    ( &dmaChannel[0] )
 
 ////////////////////////////////////////////////////////////////////////////////
 
