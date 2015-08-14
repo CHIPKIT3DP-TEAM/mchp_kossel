@@ -28,8 +28,8 @@
     CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
 
 ********************************************************************/
-#ifndef _OUTPUT_COMPARE_H_
-#define _OUTPUT_COMPARE_H_
+#ifndef _OCMP_H_
+#define _OCMP_H_
 ////////////////////////////////////////////////////////////////////////////////
 #include "system.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,9 +60,9 @@ OCMP_REGS;
 
 typedef enum
 {
-    OC_EVENT_DONE
+    OCMP_EVENT_DONE
 }
-OC_EVENT;
+OCMP_EVENT;
 
 typedef struct
 {
@@ -86,20 +86,20 @@ volatile OCMP_MODULE, *OCMP_HANDLE;
 
 typedef enum
 {
-    OC_MODE_PWM_FAULT_ON = 0b111,
-    OC_MODE_PWM_FAULT_OFF = 0b110,
-    OC_MODE_PULSE_CONTINUOUS = 0b101,
-    OC_MODE_PULSE_SINGLE = 0b100,
-    OC_MODE_INVERT = 0b011,
-    OC_MODE_HIGH_TO_LOW = 0b010,
-    OC_MODE_LOW_TO_HIGH = 0b001,
-    OC_MODE_DISABLED = 0b000
+    OCMP_MODE_PWM_FAULT_ON = 0b111,
+    OCMP_MODE_PWM_FAULT_OFF = 0b110,
+    OCMP_MODE_PULSE_CONTINUOUS = 0b101,
+    OCMP_MODE_PULSE_SINGLE = 0b100,
+    OCMP_MODE_INVERT = 0b011,
+    OCMP_MODE_HIGH_TO_LOW = 0b010,
+    OCMP_MODE_LOW_TO_HIGH = 0b001,
+    OCMP_MODE_DISABLED = 0b000
 }
-OC_MODE;
+OCMP_MODE;
 
 typedef struct
 {
-    BOOL (*EventHandler) ( OC_EVENT event, const UINT8 * data, const UINT16 size );
+    BOOL (*EventHandler) ( OCMP_EVENT event, const UINT8 * data, const UINT16 size );
     UINT8 dataParity    :2;
     UINT8 stopBits      :2;
     UINT8 flowControl   :1;
@@ -129,17 +129,17 @@ extern OCMP_MODULE ocmpModule[OCMP_MODULE_COUNT];
 
 ///////////////////////////////////////////////////////////////////////////////
 
-BOOL OCMP_Open ( OCMP_HANDLE oc, const OCMP_CONFIG *cfg );
-BOOL OCMP_Generate ( OCMP_HANDLE oc, const UINT8 *data, const UINT16 size );
-VOID OCMP_Int ( OCMP_HANDLE oc );
+BOOL OCMP_Open ( OCMP_HANDLE ocmp, const OCMP_CONFIG *cfg );
+BOOL OCMP_Generate ( OCMP_HANDLE ocmp, const UINT8 *data, const UINT16 size );
+VOID OCMP_Int ( OCMP_HANDLE ocmp );
 
-//INLINE UINT16 OC_GetCount ( OC_HANDLE oc )  { return ( oc->Count ); }
-//INLINE BOOL OC_GetInt ( OC_HANDLE oc )      { return (( oc->intRegs.rxIEC->REG & oc->intRegs.rxMask ) != 0 ); }
-//INLINE VOID OC_DisableInt ( OC_HANDLE oc )  { oc->intRegs.rxIEC->CLR = oc->intRegs.rxMask; }
-//INLINE VOID OC_EnableInt ( OC_HANDLE oc )   { oc->intRegs.rxIEC->SET = oc->intRegs.rxMask; }
+//INLINE UINT16 OC_GetCount ( OCMP_HANDLE ocmp )  { return ( ocmp->Count ); }
+//INLINE BOOL OC_GetInt ( OCMP_HANDLE ocmp )      { return (( ocmp->intRegs.rxIEC->REG & oc->intRegs.rxMask ) != 0 ); }
+INLINE VOID OCMP_DisableInt ( OCMP_HANDLE ocmp )  { }//ocmp->intRegs.rxIEC->CLR = ocmp->intRegs.rxMask; }
+INLINE VOID OCMP_EnableInt ( OCMP_HANDLE ocmp )   { }//ocmp->intRegs.rxIEC->SET = ocmp->intRegs.rxMask; }
 
-INLINE VOID OCMP_Suspend ( OCMP_HANDLE oc )     { OCMP_DisableInt ( oc ); }
-INLINE VOID OCMP_Resume ( OCMP_HANDLE oc )      { OCMP_EnableInt ( oc ); }
+INLINE VOID OCMP_Suspend ( OCMP_HANDLE ocmp )     { OCMP_DisableInt ( ocmp ); }
+INLINE VOID OCMP_Resume ( OCMP_HANDLE ocmp )      { OCMP_EnableInt ( ocmp ); }
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif

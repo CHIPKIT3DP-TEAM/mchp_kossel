@@ -10,8 +10,10 @@
 #include <GenericTypeDefs.h>
 ////////////////////////////////////////////////////////////////////////////////
 
-#define SYSTEM_Halt()       __builtin_software_breakpoint ()
-#define INLINE              extern inline __attribute__((always_inline))
+#define SYSTEM_Halt()               __builtin_software_breakpoint ()
+#define INLINE                      extern inline __attribute__((always_inline))
+#define SYSTEM_ToPhysical( x )      ((UINT32)x & 0x1FFFFFFF )
+#define SYSTEM_ToVirtual( x )       ((VOID*)( x | 0xA0000000 ))
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -32,7 +34,7 @@ SYSTEM_SFR;
 
     #include <sys/attribs.h>
     #include "time.h"
-    #include "bsp/uart.h"
+    #include "uart.h"
 
     #pragma config FMIIEN = OFF             // Ethernet RMII/MII Enable (RMII Enabled)
     #pragma config FETHIO = OFF             // Ethernet I/O Pin Select (Alternate Ethernet I/O)
@@ -77,7 +79,6 @@ SYSTEM_SFR;
 
     #pragma config CP    = OFF              // Code Protect
 
-
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -119,6 +120,8 @@ SYSTEM_SFR;
 
 #define UART_BUS                UART1
 #define UART_BUS_BAUDRATE       20000
+
+#define MAIN_I2C                I2C4
 
 ////////////////////////////////////////////////////////////////////////////////
 

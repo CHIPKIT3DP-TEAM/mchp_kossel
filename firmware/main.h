@@ -7,10 +7,12 @@
 #define _MAIN_H_
 ////////////////////////////////////////////////////////////////////////////////
 #include "system.h"
+#include "time.h"
+#include "bus.h"
 #include "print.h"
-#include "bsp/uart.h"
+#include "bsp/mcp9800.h"
 //#include "heater.h"
-//#include "drive.h"
+#include "drive/drive.h"
 ////////////////////////////////////////////////////////////////////////////////
 
 VOID MAIN_Initialize ( VOID );

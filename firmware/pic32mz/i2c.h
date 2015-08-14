@@ -116,12 +116,13 @@ typedef union
         UINT32 startInt         : 1;
         UINT32 stopInt          : 1;
         UINT32 resv4            : 9;
+
+        UINT32 address;
+        UINT32 mask;
+        UINT32 baudrate;
     };
     
     UINT32 con;
-    UINT32 address;
-    UINT32 mask;
-    UINT32 baudrate;
 }
 I2C_CONFIG;    
 
@@ -185,20 +186,22 @@ I2C_CONFIG;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define     I2C_TIMEOUT_1MS        10
+#define I2C_TIMEOUT_1MS             10
+#define I2C_PULSE_GOBBLER_DELAY     (( SYSTEM_GetPeripheralClock () * 104 ) / 1000000000 )
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define     I2C_Initialize( i2c, freq, flags )  I2C_InitBRG ( i2c, ( SYSTEM_GetPeripheralClock () / freq ) - 1, flags )
-VOID        I2C_InitBRG ( I2C_HANDLE i2c, UINT16 brg, UINT16 flags );
-BOOL        I2C_Ready ( I2C_HANDLE i2c );
-BOOL        I2C_Start ( I2C_HANDLE i2c, UINT8 addr );
-BOOL        I2C_Restart ( I2C_HANDLE i2c, UINT8 addr );
-BOOL        I2C_SendByte ( I2C_HANDLE i2c, UINT8 data );
-UINT16      I2C_SendData ( I2C_HANDLE i2c, const UINT8 *addr, UINT16 count );
-BOOL        I2C_ReceiveByte ( I2C_HANDLE i2c, UINT8 *data );
-UINT16      I2C_ReceiveData ( I2C_HANDLE i2c, UINT8 *addr, UINT16 count );
-BOOL        I2C_Stop ( I2C_HANDLE i2c );
+extern I2C_MODULE i2cModules[I2C_MODULE_COUNT];
+
+BOOL    I2C_Initialize ( I2C_HANDLE i2c, I2C_CONFIG *cfg );
+BOOL    I2C_Ready ( I2C_HANDLE i2c );
+BOOL    I2C_Start ( I2C_HANDLE i2c, UINT8 addr );
+BOOL    I2C_Restart ( I2C_HANDLE i2c, UINT8 addr );
+BOOL    I2C_WriteByte ( I2C_HANDLE i2c, UINT8 data );
+UINT16  I2C_WriteData ( I2C_HANDLE i2c, const UINT8 *addr, UINT16 count );
+BOOL    I2C_ReadByte ( I2C_HANDLE i2c, UINT8 *data );
+UINT16  I2C_ReadData ( I2C_HANDLE i2c, UINT8 *addr, UINT16 count );
+BOOL    I2C_Stop ( I2C_HANDLE i2c );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif

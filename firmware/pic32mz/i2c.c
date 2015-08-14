@@ -69,10 +69,25 @@ I2C_MODULE i2cModules[I2C_MODULE_COUNT] =
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-VOID I2C_InitBRG ( I2C_HANDLE i2c, UINT16 brg, UINT16 flags )
+BOOL I2C_Initialize ( I2C_HANDLE i2c, I2C_CONFIG *cfg )
 {
-    i2c->regs->I2CxBRG = brg;
-    i2c->regs->I2CxCON = flags | I2CxCON_INIT_MASK;
+    UINT32 baud, margin;
+    
+    baud = SYSTEM_GetPeripheralClock () / ( 2 * cfg->baudrate ) - I2C_PULSE_GOBBLER_DELAY - 2;
+    if ( baud < 2 )
+        return ( FALSE );
+    
+    i2c->regs->I2CxBRG = baud;
+    i2c->regs->I2CxADD = cfg->address;
+    i2c->regs->I2CxMSK = cfg->mask;
+    i2c->regs->I2CxCON = cfg->con | I2CxCON_INIT_MASK;
+    
+    baud = SYSTEM_GetPeripheralClock () / ( 2 * ( i2c->regs->I2CxBRG + 2 + I2C_PULSE_GOBBLER_DELAY ));
+    margin = baud / 20; // +-5%
+    if (( baud < cfg->baudrate + margin ) && ( baud > cfg->baudrate - margin ))
+        return ( TRUE );
+    else
+        return ( FALSE );
 }
 ///////////////////////////////////////////////////////////////////////////////
 BOOL I2C_Ready ( I2C_HANDLE i2c )
@@ -117,32 +132,22 @@ BOOL I2C_Start ( I2C_HANDLE i2c, UINT8 addr )
     i2c->ack = FALSE;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     i2c->regs->I2CxCONbits.SEN = TRUE;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     i2c->regs->I2CxTRN = addr;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     if ( i2c->regs->I2CxSTATbits.ACKSTAT == 0 )
-    {
         return ( TRUE );
-    }
     else
-    {
         return ( FALSE );
-    }
 }
 ///////////////////////////////////////////////////////////////////////////////
 BOOL I2C_Restart ( I2C_HANDLE i2c, UINT8 addr )
@@ -150,35 +155,25 @@ BOOL I2C_Restart ( I2C_HANDLE i2c, UINT8 addr )
     i2c->ack = FALSE;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     i2c->regs->I2CxCONbits.RSEN = TRUE;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     i2c->regs->I2CxTRN = addr;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     if ( i2c->regs->I2CxSTATbits.ACKSTAT == 0 )
-    {
         return ( TRUE );
-    }
     else
-    {
         return ( FALSE );
-    }
 }
 ///////////////////////////////////////////////////////////////////////////////
-BOOL I2C_ReceiveByte ( I2C_HANDLE i2c, UINT8 *data )
+BOOL I2C_ReadByte ( I2C_HANDLE i2c, UINT8 *data )
 {
     if ( i2c->ack == TRUE )
     {
@@ -188,23 +183,19 @@ BOOL I2C_ReceiveByte ( I2C_HANDLE i2c, UINT8 *data )
     i2c->ack = TRUE;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     i2c->regs->I2CxCONbits.RCEN = TRUE;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     *data = i2c->regs->I2CxRCV;
 
     return ( TRUE );
 }
 ///////////////////////////////////////////////////////////////////////////////
-UINT16 I2C_ReceiveData ( I2C_HANDLE i2c, UINT8 *addr, UINT16 count )
+UINT16 I2C_ReadData ( I2C_HANDLE i2c, UINT8 *addr, UINT16 count )
 {
     UINT16 read = 0;
 
@@ -218,16 +209,12 @@ UINT16 I2C_ReceiveData ( I2C_HANDLE i2c, UINT8 *addr, UINT16 count )
         i2c->ack = TRUE;
 
         if ( I2C_ReadyWait ( i2c ) != TRUE )
-        {
             break;
-        }
 
         i2c->regs->I2CxCONbits.RCEN = TRUE;
 
         if ( I2C_ReadyWait ( i2c ) != TRUE )
-        {
             break;
-        }
 
         *addr = i2c->regs->I2CxRCV;
         addr ++;
@@ -238,38 +225,30 @@ UINT16 I2C_ReceiveData ( I2C_HANDLE i2c, UINT8 *addr, UINT16 count )
     return ( read );
 }
 ///////////////////////////////////////////////////////////////////////////////
-BOOL I2C_SendByte ( I2C_HANDLE i2c, UINT8 data )
+BOOL I2C_WriteByte ( I2C_HANDLE i2c, UINT8 data )
 {
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     i2c->regs->I2CxTRN = data;
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     if ( i2c->regs->I2CxSTATbits.ACKSTAT == 1 )
-    {
         return ( FALSE );
-    }
 
     return ( TRUE );
 }
 ///////////////////////////////////////////////////////////////////////////////
-UINT16 I2C_SendData ( I2C_HANDLE i2c, const UINT8 *addr, UINT16 count )
+UINT16 I2C_WriteData ( I2C_HANDLE i2c, const UINT8 *addr, UINT16 count )
 {
     UINT16 written = 0;
 
     while ( count > 0 )
     {
         if ( I2C_ReadyWait ( i2c ) != TRUE )
-        {
             break;
-        }
 
         i2c->regs->I2CxTRN = *addr;
         addr ++;
@@ -277,14 +256,10 @@ UINT16 I2C_SendData ( I2C_HANDLE i2c, const UINT8 *addr, UINT16 count )
         written ++;
 
         if ( I2C_ReadyWait ( i2c ) != TRUE )
-        {
             break;
-        }
 
         if ( i2c->regs->I2CxSTATbits.ACKSTAT == 1 )
-        {
             break;
-        }
     }
 
     return ( written );
@@ -293,9 +268,7 @@ UINT16 I2C_SendData ( I2C_HANDLE i2c, const UINT8 *addr, UINT16 count )
 BOOL I2C_Stop ( I2C_HANDLE i2c )
 {
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     if ( i2c->ack == TRUE )
     {
@@ -304,9 +277,7 @@ BOOL I2C_Stop ( I2C_HANDLE i2c )
     }
 
     if ( I2C_ReadyWait ( i2c ) != TRUE )
-    {
         return ( FALSE );
-    }
 
     i2c->regs->I2CxCONbits.PEN = TRUE;
 

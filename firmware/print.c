@@ -11,9 +11,9 @@ UINT8 printBuff[64];
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID Print ( CHAR *str )
+VOID Print ( CHAR8 *str )
 {
-    while ( UART_Transmit ( UART_PC, str, strlen ( str )) != TRUE );
+    while ( UART_Transmit ( UART_PC, (const UINT8*)str, strlen ( str )) != TRUE );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

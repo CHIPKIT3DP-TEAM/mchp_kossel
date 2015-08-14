@@ -10,6 +10,8 @@
 BOOL MCP47FEB_Initialize ( UINT8 addr )
 {
 
+    
+    return ( FALSE );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17,6 +19,7 @@ BOOL MCP47FEB_Initialize ( UINT8 addr )
 BOOL MCP47FEB_SetValue ( UINT8 addr, UINT8 channel, UINT16 value )
 {
 
+    return ( FALSE );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

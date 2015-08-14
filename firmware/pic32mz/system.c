@@ -103,6 +103,9 @@ VOID SYSTEM_Initialize ( VOID )
     IPC42bits.U4RXIP = 4;
     IPC43bits.U4TXIP = 3;
 
+    IPC43bits.I2C4MIP = 1;
+    IEC5bits.I2C4MIE = TRUE;
+    
     PRISS = 0x76543210;
     INTCONSET = _INTCON_MVEC_MASK;
     SYSTEM_EnableInterrupts ();
@@ -147,7 +150,7 @@ VOID SYSTEM_DisableInterrupts ( VOID )
 
 UINT16 SYS_GetADC ( UINT8 chn )
 {
-//    return (( &ADC1BUF0 )[chn] );
+    return (( &ADCDATA0 )[chn] );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -206,6 +209,14 @@ VOID __ISR_AT_VECTOR ( _UART4_FAULT_VECTOR, IPL3SRS ) SYSTEM_UART4ErrorInterrupt
 {
     IFS3CLR = _IFS5_U4EIF_MASK;
     UART_ErrorInt ( UART4 );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+VOID __ISR ( _I2C4_MASTER_VECTOR, IPL1SRS ) SYSTEM_I2C4MasterInterrupt ( VOID )
+{
+    // Formal handler to support wake up from Idle
+    IFS5CLR = _IFS5_I2C4MIF_MASK;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

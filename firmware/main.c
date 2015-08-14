@@ -23,12 +23,28 @@ UART_CONFIG uartCfg =
     .flowControl = FALSE
 };
 
+I2C_CONFIG i2cConfig =
+{
+    .baudrate = 400000,
+    .highSpeed = TRUE
+};
+
+MCP9800 tempMosfets_ =
+{
+    .i2c = MAIN_I2C,
+    .address = MCP9800_I2C_BASE_ADDRESS,
+    .config = MCP9800_CONFIG_SHUTDOWN_DISABLE |
+              MCP9800_CONFIG_RESOLUTION_12 |
+              MCP9800_CONFIG_CONTINUOUS
+};
+MCP9800_HANDLE tempMosfets = &tempMosfets_;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 INT main ( VOID )
 {
     UINT32 timemark100ms, timemark1s;
-    UINT8 stage = 0;
+//    UINT8 stage = 0;
 
     MAIN_Initialize ();
 
@@ -111,9 +127,18 @@ VOID MAIN_Initialize ( VOID )
     SYSTEM_Initialize ();
     TIME_Initialize ();
     
+    TIME_Delay1ms ( 100 );
+    
     uartCfg.baudrate = UART_PC_BAUDRATE;
     uartCfg.EventHandler = &UART_PC_EventHandler;
-    UART_Initialize ( UART_PC, &uartCfg );
+    if ( UART_Initialize ( UART_PC, &uartCfg ) != TRUE )
+        SYSTEM_Halt ();
+    
+    if ( I2C_Initialize ( MAIN_I2C, &i2cConfig ) != TRUE )
+        SYSTEM_Halt ();
+            
+    if ( MCP9800_Initialize ( tempMosfets ) != TRUE )
+        SYSTEM_Halt ();
     
     BUS_Initialize ();
 

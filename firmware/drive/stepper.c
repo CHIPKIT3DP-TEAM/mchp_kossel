@@ -76,8 +76,8 @@ FLOAT fsqrt ( FLOAT x )
 ////////////////////////////////////////////////////////////////////////////////
 VOID FFP_Sqrt ( VOID )
 {
-    FLOAT x;
-
+//    FLOAT x;
+//
 //    x = FFP_SaveAFLOAT ();
 //    x = sqrtf ( x );
 //    FFP_LoadAFLOAT ( x );

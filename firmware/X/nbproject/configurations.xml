@@ -8,14 +8,16 @@
         <itemPath>../bsp/mcp47feb.h</itemPath>
         <itemPath>../bsp/mcp9800.h</itemPath>
         <itemPath>../bsp/mcp98244.h</itemPath>
-        <itemPath>../bsp/ocmp.h</itemPath>
-        <itemPath>../bsp/spi.h</itemPath>
-        <itemPath>../bsp/uart.h</itemPath>
-        <itemPath>../bsp/i2c.h</itemPath>
-        <itemPath>../bsp/dma.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="pic32mz" projectFiles="true">
+        <itemPath>../pic32mz/system.h</itemPath>
+        <itemPath>../pic32mz/dma.h</itemPath>
+        <itemPath>../pic32mz/i2c.h</itemPath>
+        <itemPath>../pic32mz/ocmp.h</itemPath>
+        <itemPath>../pic32mz/spi.h</itemPath>
+        <itemPath>../pic32mz/uart.h</itemPath>
       </logicalFolder>
       <itemPath>../main.h</itemPath>
-      <itemPath>../system.h</itemPath>
       <itemPath>../time.h</itemPath>
       <itemPath>../drive/drive.h</itemPath>
       <itemPath>../drive/drive_config.h</itemPath>
@@ -33,17 +35,19 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="bsp" projectFiles="true">
-        <itemPath>../bsp/dma.c</itemPath>
-        <itemPath>../bsp/i2c.c</itemPath>
         <itemPath>../bsp/mcp47feb.c</itemPath>
         <itemPath>../bsp/mcp9800.c</itemPath>
         <itemPath>../bsp/mcp98244.c</itemPath>
-        <itemPath>../bsp/ocmp.c</itemPath>
-        <itemPath>../bsp/spi.c</itemPath>
-        <itemPath>../bsp/uart.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="pic32mz" projectFiles="true">
+        <itemPath>../pic32mz/system.c</itemPath>
+        <itemPath>../pic32mz/dma.c</itemPath>
+        <itemPath>../pic32mz/i2c.c</itemPath>
+        <itemPath>../pic32mz/ocmp.c</itemPath>
+        <itemPath>../pic32mz/spi.c</itemPath>
+        <itemPath>../pic32mz/uart.c</itemPath>
       </logicalFolder>
       <itemPath>../main.c</itemPath>
-      <itemPath>../system.c</itemPath>
       <itemPath>../time.c</itemPath>
       <itemPath>../drive/drive.c</itemPath>
       <itemPath>../drive/kinematics.c</itemPath>
@@ -97,13 +101,13 @@
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <C32>
-        <property key="additional-warnings" value="false"/>
+        <property key="additional-warnings" value="true"/>
         <property key="enable-app-io" value="false"/>
         <property key="enable-omit-frame-pointer" value="false"/>
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
-        <property key="extra-include-directories" value="../"/>
+        <property key="extra-include-directories" value="../;../pic32mz"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>

@@ -36,39 +36,51 @@ UART_MODULE uartModule[UART_MODULE_COUNT] =
 {
     {
         (UART_REGS*) _UART1_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC3, _IEC3_U1RXIE_MASK,
-        (SYSTEM_SFR*) &IEC3, _IEC3_U1TXIE_MASK,
-        (SYSTEM_SFR*) &IEC3, _IEC3_U1EIE_MASK
+        {
+            (SYSTEM_SFR*) &IEC3, _IEC3_U1RXIE_MASK,
+            (SYSTEM_SFR*) &IEC3, _IEC3_U1TXIE_MASK,
+            (SYSTEM_SFR*) &IEC3, _IEC3_U1EIE_MASK
+        }
     },
     {
         (UART_REGS*) _UART2_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC4, _IEC4_U2RXIE_MASK,
-        (SYSTEM_SFR*) &IEC4, _IEC4_U2TXIE_MASK,
-        (SYSTEM_SFR*) &IEC4, _IEC4_U2EIE_MASK
+        {
+            (SYSTEM_SFR*) &IEC4, _IEC4_U2RXIE_MASK,
+            (SYSTEM_SFR*) &IEC4, _IEC4_U2TXIE_MASK,
+            (SYSTEM_SFR*) &IEC4, _IEC4_U2EIE_MASK
+        }
     },
     {
         (UART_REGS*) _UART3_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC4, _IEC4_U3RXIE_MASK,
-        (SYSTEM_SFR*) &IEC4, _IEC4_U3TXIE_MASK,
-        (SYSTEM_SFR*) &IEC4, _IEC4_U3EIE_MASK
+        {
+            (SYSTEM_SFR*) &IEC4, _IEC4_U3RXIE_MASK,
+            (SYSTEM_SFR*) &IEC4, _IEC4_U3TXIE_MASK,
+            (SYSTEM_SFR*) &IEC4, _IEC4_U3EIE_MASK
+        }
     },
     {
         (UART_REGS*) _UART4_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U4RXIE_MASK,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U4TXIE_MASK,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U4EIE_MASK
+        {
+            (SYSTEM_SFR*) &IEC5, _IEC5_U4RXIE_MASK,
+            (SYSTEM_SFR*) &IEC5, _IEC5_U4TXIE_MASK,
+            (SYSTEM_SFR*) &IEC5, _IEC5_U4EIE_MASK
+        }
     },
     {
         (UART_REGS*) _UART5_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U5RXIE_MASK,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U5TXIE_MASK,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U5EIE_MASK
+        {
+            (SYSTEM_SFR*) &IEC5, _IEC5_U5RXIE_MASK,
+            (SYSTEM_SFR*) &IEC5, _IEC5_U5TXIE_MASK,
+            (SYSTEM_SFR*) &IEC5, _IEC5_U5EIE_MASK
+        }
     },
     {
         (UART_REGS*) _UART6_BASE_ADDRESS,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U6RXIE_MASK,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U6TXIE_MASK,
-        (SYSTEM_SFR*) &IEC5, _IEC5_U6EIE_MASK
+        {
+            (SYSTEM_SFR*) &IEC5, _IEC5_U6RXIE_MASK,
+            (SYSTEM_SFR*) &IEC5, _IEC5_U6TXIE_MASK,
+            (SYSTEM_SFR*) &IEC5, _IEC5_U6EIE_MASK
+        }
     },
 };
 

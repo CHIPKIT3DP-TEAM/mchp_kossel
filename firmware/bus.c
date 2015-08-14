@@ -41,7 +41,7 @@ VOID BUS_Task ( VOID )
     if ( TIME_Elapsed1ms ( time ))
     {
         time = TIME_Get1ms () + BUS_TASK_PERIOD;
-        UART_Transmit ( UART_BUS, "assa\r\n", 6 );
+        UART_Transmit ( UART_BUS, (const UINT8*)"assa\r\n", 6 );
     }
 }
 

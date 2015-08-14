@@ -60,13 +60,18 @@ BOOL DRIVE_Command ( DRIVE_COMMAND_CODE cmd, DRIVE_COMMAND_PARAMS *params )
 BOOL KINEMATICS_EventHandler ( KINEMATICS_EVENT event, VOID *data, UINT16 size )
 {
 
+    return ( TRUE );
 }
 ////////////////////////////////////////////////////////////////////////////////
 BOOL PLANNER_EventHandler ( PLANNER_EVENT event, VOID *data, UINT16 size )
 {
+
+    return ( TRUE );
 }
 ////////////////////////////////////////////////////////////////////////////////
 BOOL STEPPER_EventHandler ( STEPPER_EVENT event, VOID *data, UINT16 size )
 {
+
+    return ( TRUE );
 }
 ////////////////////////////////////////////////////////////////////////////////
