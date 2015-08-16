@@ -33,11 +33,19 @@ MCP9800 tempMosfets_ =
 {
     .i2c = MAIN_I2C,
     .address = MCP9800_I2C_BASE_ADDRESS,
-    .config = MCP9800_CONFIG_SHUTDOWN_DISABLE |
-              MCP9800_CONFIG_RESOLUTION_12 |
-              MCP9800_CONFIG_CONTINUOUS
+    .shutdown = FALSE,
+    .resolution = MCP9800_RESOLUTION_0_0625
 };
 MCP9800_HANDLE tempMosfets = &tempMosfets_;
+
+MCP98244 tempSteppers_ =
+{
+    .i2c = MAIN_I2C,
+    .address = MCP98244_I2C_BASE_ADDRESS,
+    .shutdown = FALSE,
+    .resolution = MCP98244_RESOLUTION_0_0625
+};
+MCP98244_HANDLE tempSteppers = &tempSteppers_;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -138,6 +146,9 @@ VOID MAIN_Initialize ( VOID )
         SYSTEM_Halt ();
             
     if ( MCP9800_Initialize ( tempMosfets ) != TRUE )
+        SYSTEM_Halt ();
+    
+    if ( MCP98244_Initialize ( tempSteppers ) != TRUE )
         SYSTEM_Halt ();
     
     BUS_Initialize ();

@@ -9,13 +9,15 @@
 
 BOOL MCP9800_Initialize ( MCP9800_HANDLE mcp9800 )
 {
-    volatile FLOAT temp;
+    FLOAT temp;
+    UINT8 config;
+    
+    config = mcp9800->config | (( mcp9800->faultQueue / 2 ) << 3 );
     
     if ( I2C_Start ( mcp9800->i2c, mcp9800->address + I2C_WRITE ))
     if ( I2C_WriteByte ( mcp9800->i2c, MCP9800_REG_CONFIG ))
-    if ( I2C_WriteByte ( mcp9800->i2c, mcp9800->config ))
-    if ( I2C_Stop ( mcp9800->i2c ))
-    if ( I2C_Start ( mcp9800->i2c, mcp9800->address + I2C_WRITE ))
+    if ( I2C_WriteByte ( mcp9800->i2c, config ))
+    if ( I2C_Restart ( mcp9800->i2c, mcp9800->address + I2C_WRITE ))
     if ( I2C_WriteByte ( mcp9800->i2c, MCP9800_REG_TEMPERATURE ))
     {
         if ( I2C_Stop ( mcp9800->i2c ))
@@ -42,16 +44,16 @@ FLOAT MCP9800_ReadTemperature ( MCP9800_HANDLE mcp9800 )
         UINT16 usign;
         struct
         {
-            UINT8 bytel;
-            UINT8 byteh;
+            UINT8 byteL;
+            UINT8 byteH;
         };
     }
     temp = { MCP9800_TEMPERATURE_ERROR };
     FLOAT res;
     
-    if ( I2C_Restart ( mcp9800->i2c, mcp9800->address + I2C_READ ))
-    if ( I2C_ReadByte ( mcp9800->i2c, &temp.byteh ))
-    if ( I2C_ReadByte ( mcp9800->i2c, &temp.bytel ))
+    if ( I2C_Start ( mcp9800->i2c, mcp9800->address + I2C_READ ))
+    if ( I2C_ReadByte ( mcp9800->i2c, &temp.byteH ))
+    if ( I2C_ReadByte ( mcp9800->i2c, &temp.byteL ))
     {
         if ( temp.usign & 0b100000000000000 )
         {

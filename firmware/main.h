@@ -11,6 +11,7 @@
 #include "bus.h"
 #include "print.h"
 #include "bsp/mcp9800.h"
+#include "bsp/mcp98244.h"
 //#include "heater.h"
 #include "drive/drive.h"
 ////////////////////////////////////////////////////////////////////////////////
