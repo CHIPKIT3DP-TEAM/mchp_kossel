@@ -26,7 +26,8 @@ typedef union
         UINT8 resolution;
         
         I2C_HANDLE  i2c;
-        UINT8       address;
+        UINT8       tempAddress;
+        UINT8       eeAddress;
     };
     UINT8       configL;
     UINT8       configH;
@@ -35,7 +36,8 @@ MCP98244, *MCP98244_HANDLE;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MCP98244_I2C_BASE_ADDRESS       0b00110000
+#define MCP98244_I2C_TEMP_ADDRESS       0b00110000
+#define MCP98244_I2C_EE_ADDRESS         0b10100000
 
 #define MCP98244_REG_CAPABILITY         0b0000
 #define MCP98244_REG_CONFIG             0b0001
