@@ -3,21 +3,15 @@
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _SENSORS_H_
+#define _SENSORS_H_
 ////////////////////////////////////////////////////////////////////////////////
 #include "system.h"
-#include "time.h"
-#include "bus.h"
-#include "print.h"
-#include "nvstorage.h"
-#include "sensors.h"
-#include "drive/drive.h"
+#include "bsp/mcp9800.h"
+#include "bsp/mcp98244.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID MAIN_Initialize ( VOID );
-BOOL UART_PC_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
-BOOL UART_BUS_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
+BOOL SNS_Initialize ( VOID );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif

@@ -29,25 +29,6 @@ I2C_CONFIG i2cConfig =
     .highSpeed = TRUE
 };
 
-MCP9800 tempMosfets_ =
-{
-    .i2c = MAIN_I2C,
-    .address = MCP9800_I2C_BASE_ADDRESS,
-    .shutdown = FALSE,
-    .resolution = MCP9800_RESOLUTION_0_0625
-};
-MCP9800_HANDLE tempMosfets = &tempMosfets_;
-
-MCP98244 tempSteppers_ =
-{
-    .i2c = MAIN_I2C,
-    .tempAddress = MCP98244_I2C_TEMP_ADDRESS,
-    .eeAddress = MCP98244_I2C_EE_ADDRESS,
-    .shutdown = FALSE,
-    .resolution = MCP98244_RESOLUTION_0_0625
-};
-MCP98244_HANDLE tempSteppers = &tempSteppers_;
-
 ////////////////////////////////////////////////////////////////////////////////
 
 INT main ( VOID )
@@ -145,13 +126,13 @@ VOID MAIN_Initialize ( VOID )
     
     if ( I2C_Initialize ( MAIN_I2C, &i2cConfig ) != TRUE )
         SYSTEM_Halt ();
-            
-    if ( MCP9800_Initialize ( tempMosfets ) != TRUE )
+
+    if ( SNS_Initialize () != TRUE )
         SYSTEM_Halt ();
     
-    if ( MCP98244_Initialize ( tempSteppers ) != TRUE )
+    if ( NVS_Initialize () != TRUE )
         SYSTEM_Halt ();
-    
+
     BUS_Initialize ();
 
     DRIVE_Initialize ();

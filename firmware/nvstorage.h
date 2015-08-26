@@ -3,21 +3,14 @@
 //
 //
 ////////////////////////////////////////////////////////////////////////////////
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef _NVSTORAGE_H_
+#define _NVSTORAGE_H_
 ////////////////////////////////////////////////////////////////////////////////
 #include "system.h"
-#include "time.h"
-#include "bus.h"
-#include "print.h"
-#include "nvstorage.h"
-#include "sensors.h"
-#include "drive/drive.h"
+#include "bsp/mcp98244.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-VOID MAIN_Initialize ( VOID );
-BOOL UART_PC_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
-BOOL UART_BUS_EventHandler ( UART_HANDLE uart, UART_EVENT event, const UINT8 * data, const UINT16 size );
+BOOL NVS_Initialize ( VOID );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif

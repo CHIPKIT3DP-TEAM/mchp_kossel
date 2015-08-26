@@ -26,18 +26,24 @@ typedef union
         UINT8 resolution;
         
         I2C_HANDLE  i2c;
-        UINT8       tempAddress;
-        UINT8       eeAddress;
+        UINT8       address;
     };
     UINT8       configL;
     UINT8       configH;
 }
-MCP98244, *MCP98244_HANDLE;
+MCP98244_TEMP, *MCP98244_TEMP_HANDLE;
+
+typedef union
+{
+    I2C_HANDLE  i2c;
+    UINT8       address;
+}
+MCP98244_EE, *MCP98244_EE_HANDLE;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MCP98244_I2C_TEMP_ADDRESS       0b00110000
-#define MCP98244_I2C_EE_ADDRESS         0b10100000
+#define MCP98244_I2C_BASE_ADDRESS_TEMP       0b00110000
+#define MCP98244_I2C_BASE_ADDRESS_EE         0b10100000
 
 #define MCP98244_REG_CAPABILITY         0b0000
 #define MCP98244_REG_CONFIG             0b0001
@@ -72,8 +78,9 @@ MCP98244, *MCP98244_HANDLE;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL MCP98244_Initialize ( MCP98244_HANDLE mcp9800 );
-FLOAT MCP98244_ReadTemperature ( MCP98244_HANDLE mcp9800 );
+BOOL MCP98244_TEMP_Initialize ( MCP98244_TEMP_HANDLE mcp98244temp );
+BOOL MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee );
+FLOAT MCP98244_TEMP_Read ( MCP98244_TEMP_HANDLE mcp9800 );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
