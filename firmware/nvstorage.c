@@ -10,17 +10,18 @@
 MCP98244_EE seeprom_ =
 {
     .i2c = MAIN_I2C,
-    .address = MCP98244_I2C_BASE_ADDRESS_EE
+    .address = MCP98244_I2C_EE_BASE_ADDRESS
 };
 MCP98244_EE_HANDLE seeprom = &seeprom_;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL NVS_Initializae ()
+BOOL NVS_Initialize ()
 {
-    MCP98244_EE_Initialize ( seeprom );
-    
-    return ( TRUE );
+    if ( MCP98244_EE_Initialize ( seeprom ) != TRUE )
+        return ( FALSE );
+    else
+        return ( TRUE );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

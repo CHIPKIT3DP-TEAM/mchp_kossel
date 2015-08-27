@@ -19,7 +19,7 @@ MCP9800_HANDLE tempMosfets = &tempMosfets_;
 MCP98244_TEMP tempSteppers_ =
 {
     .i2c = MAIN_I2C,
-    .address = MCP98244_I2C_BASE_ADDRESS_TEMP,
+    .address = MCP98244_I2C_TEMP_BASE_ADDRESS,
     .shutdown = FALSE,
     .resolution = MCP98244_RESOLUTION_0_0625
 };

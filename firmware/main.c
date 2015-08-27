@@ -137,6 +137,8 @@ VOID MAIN_Initialize ( VOID )
 
     DRIVE_Initialize ();
 //    HEATER_Initialize ( heater );
+    
+    SYSTEM_Halt ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

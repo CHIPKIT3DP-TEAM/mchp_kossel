@@ -116,7 +116,7 @@
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
         <property key="make-warnings-into-errors" value="false"/>
-        <property key="optimization-level" value="-O1"/>
+        <property key="optimization-level" value=""/>
         <property key="place-data-into-section" value="false"/>
         <property key="post-instruction-scheduling" value="default"/>
         <property key="pre-instruction-scheduling" value="default"/>
@@ -210,6 +210,7 @@
         <property key="COMPARATOR" value="true"/>
         <property key="DMA" value="true"/>
         <property key="ETHERNET CONTROLLER" value="true"/>
+        <property key="Freeze All Other Peripherals" value="true"/>
         <property key="INPUT CAPTURE 1" value="true"/>
         <property key="INPUT CAPTURE 2" value="true"/>
         <property key="INPUT CAPTURE 3" value="true"/>

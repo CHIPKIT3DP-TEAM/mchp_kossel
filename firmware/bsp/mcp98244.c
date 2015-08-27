@@ -38,37 +38,6 @@ BOOL MCP98244_TEMP_Initialize ( MCP98244_TEMP_HANDLE mcp98244temp )
 
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee )
-{
-    FLOAT temp;
-    
-    if ( I2C_Start ( mcp98244ee->i2c, mcp98244ee->address + I2C_WRITE ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, MCP98244_REG_CONFIG ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, mcp98244ee->configH ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, mcp98244ee->configL ))
-    if ( I2C_Restart ( mcp98244ee->i2c, mcp98244ee->address + I2C_WRITE ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, MCP98244_REG_RESOLUTION ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, 0 ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, mcp98244ee->resolution ))
-    if ( I2C_Restart ( mcp98244ee->i2c, mcp98244ee->address + I2C_WRITE ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, MCP98244_REG_TEMPERATURE ))
-    {
-        if ( I2C_Stop ( mcp98244ee->i2c ))
-        {
-            temp = MCP98244_TEMP_Read ( mcp98244ee );
-            if ( temp > ( MCP98244_TEMPERATURE_MIN ) && temp < ( MCP98244_TEMPERATURE_MAX ))
-                return ( TRUE );
-        }
-        
-        return ( FALSE );
-    }
-    
-    I2C_Stop ( mcp98244ee->i2c );
-    return ( FALSE );
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
 FLOAT MCP98244_TEMP_Read ( MCP98244_TEMP_HANDLE mcp98244temp )
 {
     union
@@ -101,6 +70,34 @@ FLOAT MCP98244_TEMP_Read ( MCP98244_TEMP_HANDLE mcp98244temp )
     res = temp.sign;
     res /= 0x10;
     return ( res );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+BOOL MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee )
+{
+    if ( I2C_Start ( mcp98244ee->i2c, MCP98244_I2C_EE_SELECT_PAGE0 + I2C_WRITE ))
+    if ( I2C_WriteByte ( mcp98244ee->i2c, 0 ))
+    if ( I2C_Stop ( mcp98244ee->i2c ))
+        return ( TRUE );
+    
+    I2C_Stop ( mcp98244ee->i2c );
+    return ( FALSE );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+BOOL MCP98244_EE_ReadPage ( MCP98244_EE_HANDLE mcp98244ee, UINT8 cmd, UINT8 *data )
+{
+    if ( I2C_Start ( mcp98244ee->i2c, cmd + I2C_WRITE ))
+    if ( I2C_WriteByte ( mcp98244ee->i2c, 0 ))
+    if ( I2C_Restart ( mcp98244ee->i2c, mcp98244ee->address + I2C_READ ))
+    if ( I2C_ReadData ( mcp98244ee->i2c, data, MCP98244_BLOCK_SIZE ))
+    if ( I2C_Stop ( mcp98244ee->i2c ))
+        return ( TRUE );
+    
+    I2C_Stop ( mcp98244ee->i2c );
+    return ( FALSE );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

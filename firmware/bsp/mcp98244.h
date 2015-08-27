@@ -33,7 +33,7 @@ typedef union
 }
 MCP98244_TEMP, *MCP98244_TEMP_HANDLE;
 
-typedef union
+typedef struct
 {
     I2C_HANDLE  i2c;
     UINT8       address;
@@ -42,8 +42,12 @@ MCP98244_EE, *MCP98244_EE_HANDLE;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MCP98244_I2C_BASE_ADDRESS_TEMP       0b00110000
-#define MCP98244_I2C_BASE_ADDRESS_EE         0b10100000
+#define MCP98244_I2C_TEMP_BASE_ADDRESS  0b00110000
+#define MCP98244_I2C_EE_BASE_ADDRESS    0b10100000
+#define MCP98244_I2C_EE_SELECT_PAGE0    0b01101100
+#define MCP98244_I2C_EE_SELECT_PAGE1    0b01101110
+
+#define MCP98244_BLOCK_SIZE             0x100
 
 #define MCP98244_REG_CAPABILITY         0b0000
 #define MCP98244_REG_CONFIG             0b0001
@@ -79,8 +83,10 @@ MCP98244_EE, *MCP98244_EE_HANDLE;
 ////////////////////////////////////////////////////////////////////////////////
 
 BOOL MCP98244_TEMP_Initialize ( MCP98244_TEMP_HANDLE mcp98244temp );
-BOOL MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee );
 FLOAT MCP98244_TEMP_Read ( MCP98244_TEMP_HANDLE mcp9800 );
+
+BOOL MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee );
+BOOL MCP98244_EE_ReadPage ( MCP98244_EE_HANDLE mcp98244ee, UINT8 cmd, UINT8 *data );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
