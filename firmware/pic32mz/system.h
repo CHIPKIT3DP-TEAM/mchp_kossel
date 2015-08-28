@@ -22,6 +22,7 @@
 
 #define SYSTEM_Halt()               __builtin_software_breakpoint ()
 #define INLINE                      extern inline __attribute__((always_inline))
+#define PACKED                      __attribute__((packed))
 #define SYSTEM_ToPhysical( x )      ((UINT32)x & 0x1FFFFFFF )
 #define SYSTEM_ToVirtual( x )       ((VOID*)( x | 0xA0000000 ))
 

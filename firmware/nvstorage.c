@@ -17,21 +17,41 @@
 #include "nvstorage.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-MCP98244_EE seeprom_ =
+BOOL NVS_Initialize ( NVS_HANDLE nvs )
 {
-    .i2c = MAIN_I2C,
-    .address = MCP98244_I2C_EE_BASE_ADDRESS
-};
-MCP98244_EE_HANDLE seeprom = &seeprom_;
+    if (( nvs->persistSize + nvs->nvSize > nvs->mediaSize ))
+        return ( FALSE );
+
+    
+    
+    return ( TRUE );
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL NVS_Initialize ()
+BOOL NVS_ReadPersistent ( VOID *data, UINT16 size )
 {
-    if ( MCP98244_EE_Initialize ( seeprom ) != TRUE )
-        return ( FALSE );
-    else
-        return ( TRUE );
-}
+    
+    
+    return ( TRUE );
+}    
+
+////////////////////////////////////////////////////////////////////////////////
+
+BOOL NVS_ReadNonVolatile ( VOID *data, UINT16 size )
+{
+    
+    
+    return ( TRUE );
+}    
+
+////////////////////////////////////////////////////////////////////////////////
+
+BOOL NVS_Write ( const VOID *data, UINT16 size )
+{
+
+
+    return ( TRUE );    
+}    
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -51,7 +51,7 @@ I2C_MODULE i2cModules[I2C_MODULE_COUNT] =
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-BOOL I2C_Initialize ( I2C_HANDLE i2c, I2C_CONFIG *cfg )
+BOOL I2C_Initialize ( I2C_HANDLE i2c, const I2C_CONFIG *cfg )
 {
     UINT32 baud, margin;
     

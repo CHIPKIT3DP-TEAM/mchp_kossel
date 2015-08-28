@@ -84,10 +84,32 @@ FLOAT MCP98244_TEMP_Read ( MCP98244_TEMP_HANDLE mcp98244temp )
 
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee )
+UINT32 MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee )
 {
     if ( I2C_Start ( mcp98244ee->i2c, MCP98244_I2C_EE_SELECT_PAGE0 + I2C_WRITE ))
     if ( I2C_WriteByte ( mcp98244ee->i2c, 0 ))
+    if ( I2C_Stop ( mcp98244ee->i2c ))
+        return ( MCP98244_CAPACITY );
+    
+    I2C_Stop ( mcp98244ee->i2c );
+    return ( 0 );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+BOOL MCP98244_EE_Read ( MCP98244_EE_HANDLE mcp98244ee, UINT8 addr, VOID *data, UINT16 size )
+{
+    UINT8 cmd = MCP98244_I2C_EE_SELECT_PAGE0;
+    
+    if ( addr > 0x100 )
+    {
+        cmd = MCP98244_I2C_EE_SELECT_PAGE1;
+        addr -= 0x100;
+    }
+    if ( I2C_Start ( mcp98244ee->i2c, cmd + I2C_WRITE ))
+    if ( I2C_WriteByte ( mcp98244ee->i2c, addr ))
+    if ( I2C_Restart ( mcp98244ee->i2c, mcp98244ee->address + I2C_READ ))
+    if ( I2C_ReadData ( mcp98244ee->i2c, data, size ))
     if ( I2C_Stop ( mcp98244ee->i2c ))
         return ( TRUE );
     
@@ -97,17 +119,9 @@ BOOL MCP98244_EE_Initialize ( MCP98244_EE_HANDLE mcp98244ee )
 
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL MCP98244_EE_ReadPage ( MCP98244_EE_HANDLE mcp98244ee, UINT8 cmd, UINT8 *data )
+BOOL MCP98244_EE_Write ( MCP98244_EE_HANDLE mcp98244ee, UINT8 addr, const VOID *data, UINT16 size )
 {
-    if ( I2C_Start ( mcp98244ee->i2c, cmd + I2C_WRITE ))
-    if ( I2C_WriteByte ( mcp98244ee->i2c, 0 ))
-    if ( I2C_Restart ( mcp98244ee->i2c, mcp98244ee->address + I2C_READ ))
-    if ( I2C_ReadData ( mcp98244ee->i2c, data, MCP98244_BLOCK_SIZE ))
-    if ( I2C_Stop ( mcp98244ee->i2c ))
-        return ( TRUE );
-    
-    I2C_Stop ( mcp98244ee->i2c );
-    return ( FALSE );
+    return ( TRUE );
 }
 
 ////////////////////////////////////////////////////////////////////////////////

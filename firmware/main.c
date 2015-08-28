@@ -21,10 +21,12 @@
 //HEATER *heater = &_heater;
 
 UINT8 uartRxBuff[64];
+PERSISTENT_DATA persistData;
+NON_VOLATILE_DATA nvData;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-UART_CONFIG uartCfg =
+const UART_CONFIG uartCfg =
 {
     .baudrate = UART_PC_BAUDRATE,
     .EventHandler = &UART_PC_EventHandler,
@@ -33,11 +35,28 @@ UART_CONFIG uartCfg =
     .flowControl = FALSE
 };
 
-I2C_CONFIG i2cConfig =
+const I2C_CONFIG i2cConfig =
 {
     .baudrate = 400000,
     .highSpeed = TRUE
 };
+
+MCP98244_EE mcp98244 =
+{
+    .i2c = MAIN_I2C,
+    .address = MCP98244_I2C_EE_BASE_ADDRESS
+};
+
+NVSTORAGE nvs_ =
+{
+    .persistSize = sizeof ( PERSISTENT_DATA ),
+    .nvSize = sizeof ( NON_VOLATILE_DATA ),
+    .mediaSize = 0,
+    .mediaHandle = &mcp98244,
+    .MediaRead = (NVS_FUNC_READ)&MCP98244_EE_Read,
+    .MediaWrite = (NVS_FUNC_WRITE)&MCP98244_EE_Write,
+};
+NVS_HANDLE nvs = &nvs_;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -129,8 +148,6 @@ VOID MAIN_Initialize ( VOID )
     
     TIME_Delay1ms ( 100 );
     
-    uartCfg.baudrate = UART_PC_BAUDRATE;
-    uartCfg.EventHandler = &UART_PC_EventHandler;
     if ( UART_Initialize ( UART_PC, &uartCfg ) != TRUE )
         SYSTEM_Halt ();
     
@@ -140,7 +157,17 @@ VOID MAIN_Initialize ( VOID )
     if ( SNS_Initialize () != TRUE )
         SYSTEM_Halt ();
     
-    if ( NVS_Initialize () != TRUE )
+    nvs->mediaSize = MCP98244_EE_Initialize ( &mcp98244 );
+    if ( nvs->mediaSize == 0 )
+        SYSTEM_Halt ();
+    
+    if ( NVS_Initialize ( nvs ) != TRUE )
+        SYSTEM_Halt ();
+
+    if ( NVS_ReadPersistent ( &persistData, sizeof ( persistData )) != TRUE )
+        SYSTEM_Halt ();
+    
+    if ( NVS_ReadNonVolatile ( &nvData, sizeof ( nvData )) != TRUE )
         SYSTEM_Halt ();
 
     BUS_Initialize ();

@@ -176,7 +176,7 @@ I2C_CONFIG;
 
 extern I2C_MODULE i2cModules[I2C_MODULE_COUNT];
 
-BOOL    I2C_Initialize ( I2C_HANDLE i2c, I2C_CONFIG *cfg );
+BOOL    I2C_Initialize ( I2C_HANDLE i2c, const I2C_CONFIG *cfg );
 BOOL    I2C_Ready ( I2C_HANDLE i2c );
 BOOL    I2C_Start ( I2C_HANDLE i2c, UINT8 addr );
 BOOL    I2C_Restart ( I2C_HANDLE i2c, UINT8 addr );

@@ -20,7 +20,36 @@
 #include "bsp/mcp98244.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-BOOL NVS_Initialize ( VOID );
+typedef BOOL ( *NVS_FUNC_READ )( VOID *handle, UINT8 addr, VOID *data, UINT16 size );
+typedef BOOL ( *NVS_FUNC_WRITE )( VOID *handle, UINT8 addr, const VOID *data, UINT16 size );
+
+typedef struct
+{
+    UINT32 persistSize;
+    UINT32 nvSize;
+    UINT32 nvAddr;
+    
+    UINT32 mediaSize;
+    VOID *mediaHandle;
+    NVS_FUNC_READ MediaRead;
+    NVS_FUNC_WRITE MediaWrite;
+}
+NVSTORAGE, *NVS_HANDLE;
+
+typedef struct PACKED
+{
+    UINT32  count   : 24;
+    UINT32  crc     : 8;
+}
+NVS_BLOCK_HEADER;
+
+////////////////////////////////////////////////////////////////////////////////
+
+BOOL NVS_Initialize ( NVS_HANDLE nvs );
+BOOL NVS_ReadPersistent ( VOID *data, UINT16 size );
+BOOL NVS_ReadNonVolatile ( VOID *data, UINT16 size );
+BOOL NVS_WritePersistent ( const VOID *data, UINT16 size );
+BOOL NVS_WriteNonVolatile ( const VOID *data, UINT16 size );
 
 ////////////////////////////////////////////////////////////////////////////////
 #endif
