@@ -16,6 +16,7 @@
         <itemPath>../pic32mz/ocmp.h</itemPath>
         <itemPath>../pic32mz/spi.h</itemPath>
         <itemPath>../pic32mz/uart.h</itemPath>
+        <itemPath>../pic32mz/timer.h</itemPath>
       </logicalFolder>
       <itemPath>../main.h</itemPath>
       <itemPath>../time.h</itemPath>
@@ -46,6 +47,7 @@
         <itemPath>../pic32mz/ocmp.c</itemPath>
         <itemPath>../pic32mz/spi.c</itemPath>
         <itemPath>../pic32mz/uart.c</itemPath>
+        <itemPath>../pic32mz/timer.c</itemPath>
       </logicalFolder>
       <itemPath>../main.c</itemPath>
       <itemPath>../time.c</itemPath>
