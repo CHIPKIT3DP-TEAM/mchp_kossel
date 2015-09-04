@@ -1,4 +1,5 @@
 #define _TIMER_C_
+#include <sys/attribs.h>
 #include "timer.h"
 
 TIMERx_MODULE timerModule[TIMER_MODULE_COUNT-1] = 
@@ -72,14 +73,7 @@ BOOL TIMERx_Initialize ( TIMERx_HANDLE timer, const TIMER_CONFIG *cfg )
         if (prVal <= 65535) // Can be represented in 16 bits
             break;
     }
-    if (i >= 9) // We could not find a value. Go to 32-bit mode
-    {
-        timer->regs->TxCONbits.T32 = 1;
-    }
-    else
-    {
-        timer->regs->TxCONbits.T32 = 0;
-    }
+	timer->regs->TxCONbits.T32 = cfg->use32bit;
     timer->regs->PRx = prVal;
     timer->regs->TMRx = 0;
     
@@ -98,3 +92,44 @@ void TIMERx_Int ( TIMERx_HANDLE timer )
         timer->EventHandler(timer);
     }
 }
+
+void __ISR_AT_VECTOR(_TIMER_2_VECTOR, IPL7AUTO) _T2ISR(void)
+{
+	
+}
+
+void __ISR_AT_VECTOR(_TIMER_3_VECTOR, IPL7AUTO) _T3ISR(void)
+{
+	TIMERx_Int(TIMER2);
+}
+
+void __ISR_AT_VECTOR(_TIMER_4_VECTOR, IPL7AUTO) _T4ISR(void)
+{
+	TIMERx_Int(TIMER3);
+}
+
+void __ISR_AT_VECTOR(_TIMER_5_VECTOR, IPL7AUTO) _T5ISR(void)
+{
+	TIMERx_Int(TIMER4);
+}
+
+void __ISR_AT_VECTOR(_TIMER_6_VECTOR, IPL7AUTO) _T6ISR(void)
+{
+	TIMERx_Int(TIMER5);
+}
+
+void __ISR_AT_VECTOR(_TIMER_7_VECTOR, IPL7AUTO) _T7ISR(void)
+{
+	TIMERx_Int(TIMER6);
+}
+
+void __ISR_AT_VECTOR(_TIMER_8_VECTOR, IPL7AUTO) _T8ISR(void)
+{
+	TIMERx_Int(TIMER7);
+}
+
+void __ISR_AT_VECTOR(_TIMER_9_VECTOR, IPL7AUTO) _T9ISR(void)
+{
+	TIMERx_Int(TIMER8);
+}
+

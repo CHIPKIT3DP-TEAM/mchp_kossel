@@ -71,6 +71,7 @@ TIMERx_MODULE;
 typedef struct
 {
     BOOL (*EventHandler) ( TIMERx_HANDLE timer );
+	BOOL use32bit;
     UINT32 period;
 }
 TIMER_CONFIG;
